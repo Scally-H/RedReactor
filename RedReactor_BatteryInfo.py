@@ -236,7 +236,7 @@ if __name__ == "__main__":
                                                              battery.voltage, battery.current))
 
             if battery.battery_full:
-                print("Battery is FULL")
+                print("Battery is FULL, using external power")
             if battery.battery_charge < 0.1 and not battery.is_charging:
                 print("UI: Battery Warning!")
         print("UI: Battery shutdown request detected")

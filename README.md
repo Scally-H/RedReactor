@@ -9,7 +9,7 @@ It also measures current (and determines if a charger is attached) and sets a sh
 
 To run the RedReactor_Batteryinfo.py file you will first need to install the INA219 library (python3):
 
-pip3 install pi-ina219
+`sudo pip3 install pi-ina219`
 
 (for help with these libraries please visit their respective sites)
 
@@ -17,7 +17,7 @@ The RedReactor_Button.py file to show you how to use the button input, and detec
 
 To run the RedReactor_BatteryInfo.py file you will first need to install the GPIO-Zero library (pyhton3):
 
-sudo apt install python3-gpiozero
+`sudo apt install python3-gpiozero`
 
 (for help with these libraries please visit their respective sites)
 
