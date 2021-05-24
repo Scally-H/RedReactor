@@ -38,6 +38,10 @@ BATTERY_VMIN = 2.9
 # Set Current Measurement Range
 MAX_EXPECTED_AMPS = 5.5
 
+# Set the overcharge threshold at +1.5%
+# When triggered, the voltage read will fluctuate but battery GND is disconnected
+BATTERY_OVER = 4.2 * 1.015
+
 print("RED REACTOR - Example code")
 print("Battery Monitor: Shutdown at {:.2f}V".format(BATTERY_VMIN))
 
@@ -106,7 +110,7 @@ class RedReactor:
                 self.is_charging = True
             else:
                 self.is_charging = False
-            if 0 > self.current < 10:
+            if 0 > self.current < 10 and self.voltage < BATTERY_OVER:
                 self.battery_full = True
             else:
                 self.battery_full = False
@@ -145,7 +149,8 @@ class RedReactor:
                     self.is_charging = True
                 else:
                     self.is_charging = False
-                if 0 < self.current < 10:
+                # Include check for battery fault / overcharge condition
+                if 0 < self.current < 10 and self.voltage < BATTERY_OVER:
                     self.battery_full = True
                 else:
                     self.battery_full = False
@@ -221,8 +226,9 @@ if __name__ == "__main__":
     battery = RedReactor(report_interval)
 
     # Note that whilst charging Vbat may reach 4.24v max
-    print("Initial Battery State: {}, {}%".format("CHARGING ON " if battery.is_charging else "CHARGING OFF",
-                                                  max(round(battery.battery_charge * 100), 100)))
+    if battery.voltage < BATTERY_OVER:
+        print("Initial Battery State: {}, {}%".format("CHARGING ON " if battery.is_charging else "CHARGING OFF",
+                                                      max(round(battery.battery_charge * 100), 100)))
 
     # Run battery monitoring in separate thread
     battery_reader_thread = threading.Thread(target=battery.battery_reader, name="BatteryMonitor")
@@ -231,14 +237,19 @@ if __name__ == "__main__":
     try:
         while not battery.shutdown:
             time.sleep(report_interval)
+            # An overcharge condition disconnects the battery GND terminal from the circuit
+            # This is equivalent to no battery fitted, both give LED error indication
+            if battery.voltage > BATTERY_OVER:
+                print("Battery Error - No battery or overcharge detected. Reading {:.3f}v".format(battery.voltage))
+                continue
             print("Current Battery State: {}, "
                   "Voltage {:.3f}v, Current {:.3f}mA".format("CHARGING ON " if battery.is_charging else "CHARGING OFF",
                                                              battery.voltage, battery.current))
-
             if battery.battery_full:
                 print("Battery is FULL, using external power")
             if battery.battery_charge < 0.1 and not battery.is_charging:
-                print("UI: Battery Warning!")
+                print("UI: Battery Low Warning!")
+
         print("UI: Battery shutdown request detected")
     except KeyboardInterrupt:
         battery.stop_reading()
