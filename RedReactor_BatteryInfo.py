@@ -225,11 +225,6 @@ if __name__ == "__main__":
     # Initialise RedReactor and set measurement interval
     battery = RedReactor(report_interval)
 
-    # Note that whilst charging Vbat may reach 4.24v max
-    if battery.voltage < BATTERY_OVER:
-        print("Initial Battery State: {}, {}%".format("CHARGING ON " if battery.is_charging else "CHARGING OFF",
-                                                      max(round(battery.battery_charge * 100), 100)))
-
     # Run battery monitoring in separate thread
     battery_reader_thread = threading.Thread(target=battery.battery_reader, name="BatteryMonitor")
     battery_reader_thread.start()
@@ -242,11 +237,18 @@ if __name__ == "__main__":
             if battery.voltage > BATTERY_OVER:
                 print("Battery Error - No battery or overcharge detected. Reading {:.3f}v".format(battery.voltage))
                 continue
-            print("Current Battery State: {}, "
-                  "Voltage {:.3f}v, Current {:.3f}mA".format("CHARGING ON " if battery.is_charging else "CHARGING OFF",
-                                                             battery.voltage, battery.current))
+
             if battery.battery_full:
-                print("Battery is FULL, using external power")
+                print("Current Battery Status:"
+                      " FULL, external power, Voltage {:.3f}v, Current {:.3f}mA".format(battery.voltage,
+                                                                                              battery.current))
+            else:
+                print("Current Battery Status:"
+                      " {}% - {}, "
+                      "Voltage {:.3f}v, Current {:.3f}mA".format(min(int(battery.battery_charge * 100), 100),
+                                                                 "Charging" if battery.is_charging else "No Mains",
+                                                                 battery.voltage, battery.current))
+
             if battery.battery_charge < 0.1 and not battery.is_charging:
                 print("UI: Battery Low Warning!")
 
