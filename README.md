@@ -25,4 +25,6 @@ Full documentation is provided by the Red Reactor Manual.pdf, which includes Ras
 
 For additional help feel free to ask questions, and check out the Youtube channel.
 
-The Red Reactor will be launching soon on Kickstarter, we look forward to seeing you there!
+The Red Reactor will be launching very soon on Kickstarter, to sign up for launch news please register at https://www.theredreactor.com
+
+We look forward to seeing you there!
