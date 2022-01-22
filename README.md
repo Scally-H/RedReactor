@@ -1,7 +1,7 @@
 # The RedReactor
 <b>Hi!
   
-  Welcome to the sample code and docs for the Red Reactor, the ultimate battery power supply for all your Raspberry Pi projects.</b>
+  Welcome to the sample code and documentation for the Red Reactor, the ultimate battery power supply for all your Raspberry Pi projects.</b>
 
 <img src="RedReactor Pi UPS.jpg" width="50%"  alt="The Red Reactor Raspberry Pi 18650 UPS">
 
