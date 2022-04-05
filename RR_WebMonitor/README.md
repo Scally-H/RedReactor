@@ -54,7 +54,7 @@ Then type the following into the address bar (substiture your actual IP address,
   http://192.168.1.20:5000/RedReactor
   
 This should show you a page like this:
-<img src="RR_WebMonitor/RR_WebMon - screenshot.jpg" width="100%"  alt="The Red Reactor Remote Monitor WebApp">
+<img src="RR_WebMon - screenshot.jpg" width="100%"  alt="The Red Reactor Remote Monitor WebApp">
   
 Further information can be found on our website, at https://www.theredreactor.com
   
