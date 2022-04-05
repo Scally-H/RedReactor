@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+
+<!-- 
+*** (c) The Red Reactor
+*** Designed for use with the Red Reactor Battery Power Supply
+*** Template for RR_WebMonitor.py
+*** Creator: Pascal Herczog
+*** Version: 1.0, April 2022
+***
+*** Code provided without warranty
+-->
+
+<head>
+	<title>The RedReactor WebMonitor</title>
+	<meta http-equiv="refresh" content= {{ web_stats['Interval'] }} />
+	<link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+	
+	<script>
+    function Confirm()
+    {
+      return confirm("Are you sure?");
+    }
+	var timeleft = {{ web_stats['Interval'] - 1 }};
+	var downloadTimer = setInterval(function(){
+		if(timeleft <= 0){
+			clearInterval(downloadTimer);
+			document.getElementById("countdown").innerHTML = "Refreshing Now";
+		} else {
+			document.getElementById("countdown").innerHTML = "Refresh in " + timeleft + "s";
+		}
+		timeleft -= 1;
+		}, 1000);
+	</script>
+	<!-- Styles are embedded to support Flask substitution -->
+	<style>
+	.content {
+	  max-width: 960px;
+	  margin: auto;
+	}
+	.warning { font-weight: bold; }
+	.button {
+	  display: inline-block;
+	  padding: 2px 5px;
+	  font-size: 13px;
+	  cursor: pointer;
+	  text-align: center;
+	  text-decoration: none;
+	  outline: none;
+	  color: #fff;
+	  width: 100px;
+	  border: none;
+	  border-radius: 15px;
+	  box-shadow: 0 4px #999;
+	  transition-duration: 0.4s;
+	}
+	.button:hover {
+	  background-color: #555555; /* Black */
+	  color: white;
+	}
+	.button:active {
+	  background-color: #3e8e41;
+	  box-shadow: 0 2px #666;
+	  transform: translateY(4px);
+	}
+	.buttonForm {background-color: #4CAF50;} /* Green */
+	.buttonRestart {background-color: #008CBA;} /* Blue */
+	.buttonShutdown {background-color: #f44336;} /* Red */
+	td.battery {
+	  background-image: linear-gradient(to right,
+		  rgba({{web_stats['Bat_Colour']}},0.2) 0%, rgba({{web_stats['Bat_Colour']}},1) 100%);  /* changes transparancy */
+	  background-position: 100% 100%;
+	  background-repeat: no-repeat;
+	}  
+	</style>
+</head>
+
+<body>
+<div class="content">
+
+<p><a href="https://www.theredreactor.com">
+<img width=800 height=250 id="HeaderPic" src="/static/RR_WebMonitor.jpg" alt="Red Reactor Header">
+</a></p>
+
+<table border = 1>
+<form action="/RedReactor/" method="POST">
+ <tr>
+  <td>Measurement Interval (5-60s)</td>
+  <td><input type = "text" name = "interval" value = {{web_stats['Interval']}} /></td>
+  <td rowspan=14 align="center"><img id="StatusPic" src="RR_Status.png" alt="Red Reactor Web Status Graph"></td>
+ </tr>
+ <tr>
+  <td>Measurement History (10-100)</td>
+  <td><input type = "text" name = "history" value = {{web_stats['History']}} /></td>
+ </tr>
+ <tr>
+  <td>Averaged Readings (1-10)</td>
+  <td><input type = "text" name = "averaging" value = {{web_stats['Averaging']}} /></td>
+ </tr>
+ <tr>
+  <td>Log Data (Yes/No)</td>
+  <td><select name = "log_data" {% if web_stats['Log_Data'] == "1" %} value = "1" {% else %} value = "0" {% endif %} >
+  <option value = "0" {% if web_stats['Log_Data'] == "0" %} selected="selected" {% endif %}>NO</option>
+  <option value = "1" {% if web_stats['Log_Data'] == "1" %} selected="selected" {% endif %}>YES</option>
+  </select></td>
+ </tr>
+  <tr>
+  <td><p></p></td>
+  <td align="center"><button class="button buttonForm" type = "submit" value = "submit" />Submit</td>
+ </tr>
+ </form>
+ <tr>
+  <td>Last Measurement (Volts)</td>
+  <td>{{web_stats['Last_Volts']}}</td>
+ </tr>
+ <tr>
+  <td>Last Measurement (mA)</td>
+  <td>{{web_stats['Last_Current']}}</td>
+ </tr>
+ <tr>
+  <td><p></p></td>
+  <td></td>
+ </tr>
+ <tr>
+  <td>Averaged (Volts)</td>
+  <td>{{web_stats['Average_Volts']}}</td>
+ </tr>
+ <tr>
+  <td>Averaged (mA)</td>
+  <td>{{web_stats['Average_Current']}}</td>
+ </tr>
+ <tr>
+  <td><p></p></td>
+  <td></td>
+ </tr>
+ <tr>
+  <td>External Power Source</td>
+  <td align="center"
+  style='background-size: {{ 100 - (100 - web_stats['Bat_Charge']) / 2}}% 100%' 
+  class='battery {% if web_stats['Ext_Warning'] %} warning {% endif %}'>{{web_stats['Ext_Power']}}</td>
+ </tr>
+ <tr>
+  <td>Uptime</td>
+  <td align="center">{{web_stats['Up_Time']}}</td>
+ </tr>
+ <tr>
+  <td>Time on Batteries</td>
+  <td align="center">{{web_stats['Bat_Time']}}</td>
+ </tr>
+ <tr height="40px">
+  <td align="center">
+  <form action="/stop/" method="POST">
+  <button class="button buttonRestart" Onclick="return Confirm();" type="submit" name="stop" value="Restart">
+  <!-- <img src="images/action_delete.png" alt="Restart"> -->
+  Restart</button></td>
+  <td align="center">
+  <button class="button buttonShutdown" Onclick="return Confirm();" type="submit" name="stop" value="Shutdown">
+  <!-- <img src="images/action_delete.png" alt="Restart"> -->
+  Shutdown</button></td>
+  <td align="center">Last Sample Time : {{web_stats['Time_Now']}}<br><div id="countdown"></div>
+  </td>
+  </form>
+ </tr>
+</table>
+
+<p>©</span> The RedReactor</p>
+
+</div>
+
+</body>
+
+</html>

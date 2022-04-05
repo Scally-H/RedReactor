@@ -127,6 +127,9 @@ class RedReactor:
         if self.voltage < BATTERY_VMIN and not self.is_charging:
             self.shutdown = True
 
+    def change_interval(self, interval):
+        self.measure_interval = interval
+
     def stop_reading(self):
         self.stop_reader = True
 
@@ -241,7 +244,7 @@ if __name__ == "__main__":
             if battery.battery_full:
                 print("Current Battery Status:"
                       " FULL, external power, Voltage {:.3f}v, Current {:.3f}mA".format(battery.voltage,
-                                                                                              battery.current))
+                                                                                        battery.current))
             else:
                 print("Current Battery Status:"
                       " {}% - {}, "
