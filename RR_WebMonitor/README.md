@@ -58,4 +58,4 @@ This should show you a page like this:
   
 Further information can be found on our website, at https://www.theredreactor.com
   
-Please write to hello@theredreactor if you have any feedback or problem with this repository. Your input is appreciated!
+Please write to mailto:hello@theredreactor if you have any feedback or problem with this repository. Your input is appreciated!
