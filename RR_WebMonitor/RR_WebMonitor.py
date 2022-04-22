@@ -54,6 +54,7 @@ class WebStats:
         self.up_time = int(float(open('/proc/uptime').read().split()[0]))
         self.battery_time = 0
         self.ext_power = "Initialising"
+        self.op_status = "Initialising"
         self.stop = False
 
         self.readings = 0
@@ -153,15 +154,30 @@ class WebStats:
         else:
             self.ext_power = "BATTERY FAULT!!"
 
+        # Add data from vcgencmd into form
+        try:
+            cpu_status = subprocess.Popen(['vcgencmd', 'get_throttled'], stdout=subprocess.PIPE)
+            cpu_data = cpu_status.communicate()
+            cpu_status = int(cpu_data[0].decode().split("=")[1], 16)
+            if cpu_status == 0:
+                self.op_status = "CPU/GPU OK"
+            else:
+                self.op_status = cpu_data[0].decode().split("=")[1].strip()
+                self.op_status = self.op_status[:3] + " " + self.op_status[3:]
+        except (OSError, IndexError, ValueError):
+            # Failed to extract info
+            self.op_status = "Data Error"
+
         if self.log_data:
             self.log_file.write(time.strftime("%H:%M:%S", time.localtime()) +
                                 ", {:.2f}V, {:7.2f}mA, Ext Power: {}, Uptime: {}, Battery "
-                                "Time: {}, Temperature: {:.1f}\n".format(self.battery.voltage,
-                                                                         self.battery.current,
-                                                                         "Y" if self.ext_power else "N",
-                                                                         self.up_time,
-                                                                         self.battery_time,
-                                                                         self.temperature)
+                                "Time: {}, Temperature: {:.1f}, CPU: {}\n".format(self.battery.voltage,
+                                                                                  self.battery.current,
+                                                                                  "Y" if self.ext_power else "N",
+                                                                                  self.up_time,
+                                                                                  self.battery_time,
+                                                                                  self.temperature,
+                                                                                  self.op_status)
                                 )
             self.log_file.flush()
 
@@ -233,6 +249,7 @@ def rr_web_monitor():
                  'Last_Current': "{:.2f}".format(web_info.battery.current),
                  'Average_Volts': "{:.3f}".format(web_info.average_volts),
                  'Average_Current': "{:.2f}".format(web_info.average_current),
+                 'Op_Status': "{}".format(web_info.op_status),
                  'Bat_Charge': web_info.battery.battery_charge,
                  'Bat_Colour': colour,
                  'Ext_Power': web_info.ext_power,
@@ -264,23 +281,24 @@ def rr_stop():
             return '<h1 style="color:red"><b>System is Shutting Down Now...</b></h1>'
 
 
+# Moved to outside of __main__ to support nginx
+# Define battery status colour 0-9 (warning colour), 10-19, 20-39, 40-59, 60-79, 80-99
+full = '0,204,0'
+fault = '230, 230, 0'
+discharging = ('255,0,0', '255,153,0', '204,204,0', '153,204,0', '102,255,51', '51,204,51')
+charging = ('204,0,153', '255,0,255', '204,51,255', '153,102,255', '102,102,255', '0,153,153')
+
+# Invoke the WebStats class to manage webpage data
+web_info = WebStats()
+
+# Run separate thread to update and monitor battery status for shutdown every 5s
+web_info_thread = threading.Thread(target=web_info.update_bat_status, name="RR_BatStatus")
+web_info_thread.start()
+time.sleep(0.5)
+
 # Start the server framework
 if __name__ == "__main__":
     """Runs the Flask Server that handles incoming page requests"""
-
-    # Define battery status colour 0-9 (warning colour), 10-19, 20-39, 40-59, 60-79, 80-99
-    full = '0,204,0'
-    fault = '230, 230, 0'
-    discharging = ('255,0,0', '255,153,0', '204,204,0', '153,204,0', '102,255,51', '51,204,51')
-    charging = ('204,0,153', '255,0,255', '204,51,255', '153,102,255', '102,102,255', '0,153,153')
-
-    # Invoke the WebStats class to manage webpage data
-    web_info = WebStats()
-
-    # Run separate thread to update and monitor battery status for shutdown every 5s
-    web_info_thread = threading.Thread(target=web_info.update_bat_status, name="RR_BatStatus")
-    web_info_thread.start()
-    time.sleep(0.5)
 
     print("Starting WebServer for RR_WebMonitor Application")
     app.run(host="0.0.0.0", port=5000, debug=False)

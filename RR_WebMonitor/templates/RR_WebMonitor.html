@@ -39,6 +39,7 @@
 	  max-width: 960px;
 	  margin: auto;
 	}
+	/* buttons and battery entries */
 	.warning { font-weight: bold; }
 	.button {
 	  display: inline-block;
@@ -72,7 +73,47 @@
 		  rgba({{web_stats['Bat_Colour']}},0.2) 0%, rgba({{web_stats['Bat_Colour']}},1) 100%);  /* changes transparancy */
 	  background-position: 100% 100%;
 	  background-repeat: no-repeat;
-	}  
+	}
+	
+	/* Operating Status entry tooltip */
+	.tooltip {
+	  position: relative;
+	  display: inline-block;
+	  border-bottom: 1px dotted black;
+	}
+
+	.tooltip .tooltiptext {
+	  visibility: hidden;
+	  width: 400px;
+	  background-color: #555;
+	  color: #fff;
+	  text-align: left;
+	  border-radius: 6px;
+	  padding: 5px 10px;
+	  position: absolute;
+	  z-index: 1;
+	  bottom: 125%;
+	  left: 50%;
+	  margin-left: -210px;
+	  opacity: 0;
+	  transition: opacity 0.3s;
+	}
+
+	.tooltip .tooltiptext::after {
+	  content: "";
+	  position: absolute;
+	  top: 100%;
+	  left: 50%;
+	  margin-left: -5px;
+	  border-width: 5px;
+	  border-style: solid;
+	  border-color: #555 transparent transparent transparent;
+	}
+
+	.tooltip:hover .tooltiptext {
+	  visibility: visible;
+	  opacity: 1;
+	}
 	</style>
 </head>
 
@@ -88,7 +129,7 @@
  <tr>
   <td>Measurement Interval (5-60s)</td>
   <td><input type = "text" name = "interval" value = {{web_stats['Interval']}} /></td>
-  <td rowspan=14 align="center"><img id="StatusPic" src="RR_Status.png" alt="Red Reactor Web Status Graph"></td>
+  <td rowspan=15 align="center"><img id="StatusPic" src="RR_Status.png" alt="Red Reactor Web Status Graph"></td>
  </tr>
  <tr>
   <td>Measurement History (10-100)</td>
@@ -126,9 +167,24 @@
   <td>Averaged (Volts)</td>
   <td>{{web_stats['Average_Volts']}}</td>
  </tr>
- <tr>
+  <tr>
   <td>Averaged (mA)</td>
   <td>{{web_stats['Average_Current']}}</td>
+ </tr>
+ <tr>
+  <td>Operating Status</td>
+  <td>
+  <div class="tooltip">{{web_stats['Op_Status']}}
+  <span class="tooltiptext">
+0x0 0001 - under-voltage<br>
+0x0 0002 - currently throttled<br>
+0x0 0004 - arm frequency capped<br>
+0x0 0008 - soft temperature limit reached<br>
+0x1 0000 - under-voltage has occurred since last reboot<br>
+0x2 0000 - throttling has occurred since last reboot<br>
+0x4 0000 - arm frequency cap has occurred since last reboot<br>
+0x8 0000 - soft temperature limit reached since last reboot
+  </span></div></td>
  </tr>
  <tr>
   <td><p></p></td>
