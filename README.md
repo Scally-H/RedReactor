@@ -31,11 +31,14 @@ sudo apt install python3-gpiozero
 
 Full documentation is provided by the Red Reactor Manual.pdf, which includes Raspberry Pi configuration instructions.
 
-<h2>We're pleased to announce the first release of our LXDE GUI battery widget!</h2>
+## We're pleased to announce the first release of our LXDE GUI battery widget!
 It is available from https://github.com/Scally-H/pi-battery-widget and autostarts itself perfectly into your widget taskbar, showing you charge level, battery status and carefully modelled remaining charge and discharge times!
 
-<h2>Find out more!</h2>
-For additional help feel free to ask questions, and check out the Youtube channel at https://www.youtube.com/channel/UC3rKXVp0QUgYTzju2NIGytA
+## New Remote Monitoring using your Web Browser!
+Head over to the RR_WebMonitor folder (see file listing above) to use your browser to remotely access all the battery status information, and even request a shutdown or restart of your system. Please see further instructions in the RR_WebMonitor README file.
+
+### Find out more!
+For additional help feel free to ask questions, and check out the Youtube channel at https://www.youtube.com/channel/UC3rKXVp0QUgYTzju2NIGytA or contact us on hello@theredreactor.com - we'd love to hear from you.
 
 The Red Reactor will be launching very soon on Kickstarter, to sign up for launch news please register at https://www.theredreactor.com
 
