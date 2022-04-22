@@ -2,6 +2,8 @@
 
 The Red Reactor now provides a remote monitoring feature that enables you to see the status information at a glance from your web-browser.
 
+- <b>New Feature: Added CPU/GPU Throttling status incl. handy tooltip on returned value</b>
+
 **Installation**
 
 To update a previously downloaded RedReactor:
