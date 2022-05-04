@@ -11,6 +11,8 @@ A wide range of features enable you to quickly create a robust system, including
 The RedReactor_BatteryInfo.py file shows you how to run a background task to monitor the battery voltage.
 It also measures current (and determines if a charger is attached) and sets a shutdown flag when reaching a user specified minimum voltage, that you can use to force a system shutdown
 
+**Installing the required libraries**
+
 To run the RedReactor_Batteryinfo.py file you will first need to install the INA219 library (python3):
 
 ```
@@ -19,8 +21,6 @@ sudo pip3 install pi-ina219
 
 (for help with these libraries please visit their respective sites)
 
-The RedReactor_Button.py file to show you how to use the button input, and detect short, medium and long presses.
-
 To run the RedReactor_BatteryInfo.py file you will first need to install the GPIO-Zero library (pyhton3):
 
 ```
@@ -28,6 +28,33 @@ sudo apt install python3-gpiozero
 ```
 
 (for help with these libraries please visit their respective sites)
+
+**Installation of example code**
+
+After installing the above libraries, type the following if you don't have these github files yet:
+```
+  cd
+  git clone https://github.com/Scally-H/RedReactor
+  cd RedReactor
+```
+
+Or if you just want to update the files, type:
+```
+  cd ~/RedReactor
+  git pull
+```
+
+**Running the example code**
+
+Use the RedReactor_Button.py file to show you how to use the button input, and detect short, medium and long presses:
+```
+  python3 RedReactor_Button.py
+```
+
+To see the battery voltage and current consumption, type:
+```
+  python3 RedReactor_BatteryInfo.py
+```
 
 Full documentation is provided by the Red Reactor Manual.pdf, which includes Raspberry Pi configuration instructions.
 
