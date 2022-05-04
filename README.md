@@ -21,7 +21,7 @@ sudo pip3 install pi-ina219
 
 (for help with these libraries please visit their respective sites)
 
-To run the RedReactor_BatteryInfo.py file you will first need to install the GPIO-Zero library (pyhton3):
+To run the RedReactor_Button.py file you will first need to install the GPIO-Zero library (pyhton3):
 
 ```
 sudo apt install python3-gpiozero
