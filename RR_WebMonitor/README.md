@@ -38,6 +38,11 @@ On some setups, numpy may fail to install everything needed, in which case, you'
 ```
   sudo apt-get install libatlas-base-dev
 ```
+Also, if you get the following error, ImportError: numpy.core.multiarray failed to import
+=> you will need to force numpy to update using:
+```
+  pip3 install -U numpy
+```
   
 If not already installed previously, please also install:
 ```
