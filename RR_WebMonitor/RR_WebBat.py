@@ -46,7 +46,8 @@ BATTERY_DCHG = 0.05
 
 # Verify that RED REACTOR is attached, else abort
 try:
-    check_attached = INA219(SHUNT_OHMS, MAX_EXPECTED_AMPS)
+    # Added busnum to ensure correct I2C bus used
+    check_attached = INA219(SHUNT_OHMS, MAX_EXPECTED_AMPS, busnum=1)
     check_attached.configure(check_attached.RANGE_16V)
 except OSError:
     print("RED REACTOR IS NOT Attached, exiting")
@@ -71,7 +72,8 @@ class RRWebBat:
         self.shutdown = False
 
         # Set measurement config, ina class will optimise readings for resolution
-        self.ina = INA219(SHUNT_OHMS, MAX_EXPECTED_AMPS)
+        # Added busnum to ensure correct I2C bus used
+        self.ina = INA219(SHUNT_OHMS, MAX_EXPECTED_AMPS, busnum=1)
         self.ina.configure(self.ina.RANGE_16V)
 
         # Initialise readings
