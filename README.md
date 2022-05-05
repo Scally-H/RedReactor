@@ -18,8 +18,9 @@ To run the RedReactor_Batteryinfo.py file you will first need to install the INA
 ```
 sudo pip3 install pi-ina219
 ```
+Please remember to enable the I2C bus under the Advanced Options of raspi-config or via the GUI, as documented in the Red Reactor instruction manual (you will need to reboot the Pi for this to take effect).
 
-(for help with these libraries please visit their respective sites)
+(You can find more information about this library for your own code at https://github.com/chrisb2/pi_ina219 )
 
 To run the RedReactor_Button.py file you will first need to install the GPIO-Zero library (python3):
 
