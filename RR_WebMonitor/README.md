@@ -49,6 +49,7 @@ If not already installed previously, please also install:
   sudo pip3 install pi-ina219
   sudo apt install python3-gpiozero
 ```
+(Please remember to enable the I2C bus under the Advanced Options of raspi-config or via the GUI, as documented in the Red Reactor instruction manual - you will need to reboot the Pi for this to take effect.)
   
 To run the Flask Webserver with the RR_WebMonitor web application, from within the RR_WebMonitor directory, type:
 ```
