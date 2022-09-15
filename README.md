@@ -2,6 +2,8 @@
 <b>Hi!
   
   Welcome to the sample code and documentation for the Red Reactor, the ultimate battery power supply for all your Raspberry Pi projects.</b>
+  
+**We are now live on Kickstarter! So please visit us at https://www.kickstarter.com/projects/pascal-h/the-red-reactor-when-power-really-matters for some great options!**
 
 <img src="RedReactor Pi UPS.jpg" width="50%"  alt="The Red Reactor Raspberry Pi 18650 UPS">
 
@@ -71,6 +73,6 @@ You will find detailed technical information and software configuration guide in
 
 For additional help feel free to ask questions, and check out the Youtube channel at https://www.youtube.com/channel/UC3rKXVp0QUgYTzju2NIGytA or contact us on hello@theredreactor.com - we'd love to hear from you.
 
-The Red Reactor will be launching very soon on Kickstarter, to sign up for launch news please register at https://www.theredreactor.com
+The Red Reactor is now LIVE on Kickstarter at https://www.kickstarter.com/projects/pascal-h/the-red-reactor-when-power-really-matters
 
 We look forward to seeing you there!
