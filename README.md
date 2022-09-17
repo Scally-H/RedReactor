@@ -67,6 +67,9 @@ It is available from https://github.com/Scally-H/pi-battery-widget and autostart
 ## New Remote Monitoring using your Web Browser!
 Head over to the RR_WebMonitor folder (see file listing above) to use your browser to remotely access all the battery status information, and even request a shutdown or restart of your system. Please see further instructions in the RR_WebMonitor README file.
 
+## Check out our new Battery Monitor with email alerts!
+Head over to the RR_BatMonitor folder (see file listing above) for a background battery monitor application that can email you on any battery state changes and manage a safe shutdown - perfect for 'headless' (no GUI) or unattended systems!
+
 ### Find out more!
 
 You will find detailed technical information and software configuration guide in the RedReactor User Manual (pdf) - see the above file repository.
