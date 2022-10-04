@@ -1,0 +1,29 @@
+# The Red Reactor
+#
+# RR_BatMonitor systemd service unit file
+#
+# No start-up dependencies, check battery asap
+# Start-up error will exit and retry once
+# RR_BatMonitor will retry emails until network ready
+
+[Unit]
+Description=RR_BatMonitor Service
+#
+# Restart if service fails but terminate retries if start-up error
+StartLimitIntervalSec=30
+StartLimitBurst=1
+
+[Service]
+# Edit path if necessary
+WorkingDirectory=/home/pi/RedReactor/RR_BatMonitor
+# Create logs in username or remove for root
+User=pi
+# Edit path if necessary
+ExecStart=/usr/bin/python3 /home/pi/RedReactor/RR_BatMonitor/RR_BatMonitor.py
+# Restart on failure after 5 seconds
+Restart=on-failure
+RestartSec=5
+
+[Install]
+# Start early in boot process
+WantedBy=network.target

@@ -130,11 +130,23 @@ try:
 
 except OSError as error:
     if send_alerts:
+        # If running before network access, wait short while (~100s max) then time out
+        print("RED REACTOR STARTUP ERROR - checking internet access to send email")
+        for i in range(20):
+            try:
+                # Choose any (reliable) target domain:port
+                socket.create_connection(("www.google.com", 80), timeout=3.1)
+                break
+            except (OSError, TimeoutError, ConnectionError) as e:
+                # Short delay before trying again
+                time.sleep(2)
         send_email(message_error + str(error))
     else:
         print(message_error + str(error))
     if log_data:
         write_log(0, 0, 0, "STARTUP ERROR: " + str(error))
+    # Error reading battery status, hence you may wish to force a shutdown instead
+    # os.system("sudo shutdown now")
     exit(1)
 
 else:
