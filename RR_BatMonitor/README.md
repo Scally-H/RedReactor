@@ -90,6 +90,7 @@ The log file is written in CSV format to make it easy to import into Excel shoul
 
 It is advised to use the log_data = True option since any console output will not be visible when run at boot as a background task.
 
+<H3>Using CRON to run RR_BatMonitor</H3>
 There are various ways you can configure the RR_BatMonitor application to run at boot time. For simplicity it is suggested to use CRON, as shown below. This way it will catch an immediate shutdown requirement at the earliest opportunity.
 
 When using CRON, note that depending on other software activities the RR_Batmonitor application may start before internet access is fully established. In this case, the RR_Batmonitor will log an email failure but will continue to try to send status emails at each read_interval until successful, then again only if the battery status changes as described below.
@@ -122,6 +123,19 @@ If the application is not running you can check for any CRON errors by typing:
 cat /var/log/syslog | grep RR
 ```
 => Any application errors are redirected to the RR_BatMon.log file (overwritten on reboot).
+
+<H3>Using systemd service to run RR_BatMonitor</H3>
+To run RR_BatMonitor as a systemd service, instead of via CRON, please use the following commands to install the service:
+
+```
+sudo cp RR_BatMonitor.service /lib/systemd/system/RR_BatMonitor.service
+sudo systemctl enable RR_BatMonitor.service
+sudo systemctl start RR_BatMonitor.service
+sudo systemctl status RR_BatMonitor.service
+```
+This will start the service immediately, but also automatically again when booting. The status command will show it running.
+
+The RR_BatMonitor.service file defines that if the service terminates with an error it will be restarted again after <b>RestartSec</b> 5 seconds. However, since RR_Batmonitor will automatically ignore email send errors (and simply try again at the next interval), the service is set to restart only once to avoid flooding your inbox. You can change this by editing <b>StartLimitBurst</b> which sets the number of restarts allowed within <b>StartLimitIntervalSec</b> seconds. If you decide to change these values after installing the service, do remember to copy the service file to /lib/.. again!
 
 <H2>Application Features</H2>
 
