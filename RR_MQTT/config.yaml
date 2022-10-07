@@ -1,0 +1,24 @@
+# Red Reactor MQTT Configuration File
+# Edit to fit with e.g. HomeAssistant / OpenHAB etc
+
+# Define MQTT broker address (IP or DNS name/localhost)
+# Port 1883 for unsecured access
+# Edit username/password to mqtt broker if required
+mqtt:
+  broker: 127.0.0.1
+  port: 1883
+  username: mymqttusername  # Login to MQTT broker
+  password: mymqttpassword  # Login to MQTT broker
+
+homeassistant:
+  topic: homeassistant  # MQTT Autodiscovery root topic
+  sensor: true  # Publish autodiscovery for RedReactor
+
+publish_period: 30  # How long to wait between publishing information
+
+# Ensure hostname is unique!
+#hostname: myrpi     # Identifier for this Red Reactor, defaults to socket.hostname
+
+# In case you want to override ON and OFF strings
+#online: online
+#offline: offline
