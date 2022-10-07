@@ -70,6 +70,9 @@ Head over to the RR_WebMonitor folder (see file listing above) to use your brows
 ## Check out our new Battery Monitor with email alerts!
 Head over to the RR_BatMonitor folder (see file listing above) for a background battery monitor application that can email you on any battery state changes and manage a safe shutdown - perfect for 'headless' (no GUI) or unattended systems!
 
+## Home Automation with our Red Reactor MQTT Client!
+Head over to the RR_MQTT folder (see file listing above) for our first release of our MQTT client to publish full battery status updates to your favourite MQTT Broker and Home Automation system, whilst monitoring the battery voltage to ensure a safe shutdown. Full details are in the readme file.
+
 ### Find out more!
 
 You will find detailed technical information and software configuration guide in the RedReactor User Manual (pdf) - see the above file repository.
