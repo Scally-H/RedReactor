@@ -90,7 +90,7 @@ Pressing CTRL-C will gracefully send the OFF (offline) status and exit.
 
 <H2>Configure to run at Boot time</h2>
 
-You can use systemd to automate running RR_MQTT as a service, so it can set to run completely unattended.
+You can use systemd to automate running RR_MQTT as a service, so it can be set to run completely unattended.
 To instal the service, please use the following commands:
 
 ```
