@@ -22,3 +22,7 @@ publish_period: 30  # How long to wait between publishing information
 # In case you want to override ON and OFF strings
 #online: online
 #offline: offline
+
+# Set logging levels for console and (log) file [DEBUG, INFO, WARNING, ERROR, CRITICAL]
+c_log_level: DEBUG
+f_log_level: INFO
