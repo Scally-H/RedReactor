@@ -4,7 +4,7 @@ This Red Reactor MQTT Client is designed to run as a background application to
 monitor the battery status and publish its data to an MQTT Broker for 
 integration with Home Automation systems, such as HomeAssistant and OpenHAB.
 
-<b> This is a first draft release of the RR_MQTT client, tested with the
+<b> This is a draft release of the RR_MQTT client, tested with the
 Mosquito MQTT Broker and OpenHAB, but requires further integration work on 
 the Home Automation server side</b>
 
@@ -70,6 +70,7 @@ The <b>config.yaml</b> file can be used to set parameters specific to your devic
 4. Adjust the publish_period if necessary (default: 30 seconds)
 5. Override the hostname if necessary (default: actual hostname)
 6. Override the online/offline text strings if necessary (default: ON, OFF)
+7. Set the log-level for console and logfile outputs (only use level names shown)
 
 It may be useful to run the application interactively first to check for any 
 system errors, connection errors etc. To do so, start from within the
