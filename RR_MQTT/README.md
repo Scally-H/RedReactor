@@ -156,6 +156,13 @@ at run-time if the operational requirements change.
 The RR_MQTT Client is subscribed to the Command topic to receive incoming
 commands as a json string format {'command': value} pair.
 
+Supported json string commands are:
+{'Shutdown': n} - n is not used
+{'Reboot': n} - n is not used
+{'Interval': n} - where n is an int in seconds
+{'WARN': n} - where n is a float representing % charge
+{'VMIN': n} - where n is  float representing BATTERY_VMIN shutdown voltage level
+
 If the SHUTDOWN or REBOOT state is triggered, the application will set the 
 Service topic to OFF (offline) first, then execute the OS shutdown/reboot 
 system command. On shutdown completion the Red Reactor will automatically 
