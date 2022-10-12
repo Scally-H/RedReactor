@@ -156,12 +156,15 @@ at run-time if the operational requirements change.
 The RR_MQTT Client is subscribed to the Command topic to receive incoming
 commands as a json string format {'command': value} pair.
 
-Supported json string commands are:
-{'Shutdown': n} - n is not used
-{'Reboot': n} - n is not used
-{'Interval': n} - where n is an int in seconds
-{'WARN': n} - where n is a float representing % charge
-{'VMIN': n} - where n is  float representing BATTERY_VMIN shutdown voltage level
+Supported json string commands are:<br>
+
+{'Shutdown': n} - n is not used<br>
+{'Reboot': n} - n is not used<br>
+{'Interval': n} - where n is an int in seconds<br>
+{'WARN': n} - where n is a float representing % charge<br>
+{'VMIN': n} - where n is  float representing BATTERY_VMIN shutdown voltage level<br>
+
+Invalid entries are rejected and logged as errors.
 
 If the SHUTDOWN or REBOOT state is triggered, the application will set the 
 Service topic to OFF (offline) first, then execute the OS shutdown/reboot 
