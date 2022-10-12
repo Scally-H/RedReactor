@@ -18,6 +18,9 @@ The RR_MQTT client functions include:
 - The Command channel enables control and parameter modification for:
   - Immediate shutdown, Immediate Reboot, Battery Warning level, Target Shutdown voltage
 - Easily scheduled to automatically start at boot
+- ** New Logger added to provide detailed output to both console and RR_MQTT.log files
+  - Set the log-level via the config.yaml file
+  - When running as a service, recent log entries can also be viewed via systemctl status
 
 The RR_MQTT Client can be easily configured to launch as a background task at boot time, and will immediately start monitoring the system status whilst your system performs all the tasks it is normally set up to do with your own or 3rd party applications.
 
@@ -78,8 +81,7 @@ Type:
 ```
 and you will see reports printed to the console as it initialises and connects to the MQTT Broker, with any errors shown in the console.
 
-<b>This draft release includes a number of print statements to give more details
-about its actions for testing interactively with your MQTT Broker. It also subscribes
+<b> If logging is configured to DEBUG level (either for console and/or logfile) it also subscribes
 to its own Service and Data topics to show its published data sets. The return Command 
 channel has not yet been fully tested.</b>
 
@@ -87,7 +89,23 @@ Pressing CTRL-C will gracefully send the OFF (offline) status and exit.
 
 <H2>Configure to run at Boot time</h2>
 
-A systemd service file will be uploaded soon
+You can use systemd to automate running RR_MQTT as a service, so it can set to run completely unattended.
+To instal the service, please use the following commands:
+
+```
+sudo cp RR_MQTT.service /lib/systemd/system/RR_MQTT.service
+sudo systemctl enable RR_MQTT.service
+sudo systemctl start RR_MQTT.service
+sudo systemctl status RR_MQTT.service
+```
+This will start the service immediately, but also automatically again when booting. The status command will show it running.
+
+Since RR_MQTT will automatically retry on connection errors, the service is set to start immediately at the network.target level during boot, allowing it to monitor the battery and take local action as soon as possible.
+
+The RR_MQTT.service file defines that if the service terminates with an error it will be restarted again after <b>RestartSec</b> 5 seconds.  You can change this by editing <b>StartLimitBurst</b> which sets the number of restarts allowed within <b>StartLimitIntervalSec</b> seconds. If you decide to change these values after installing the service, do remember to copy the service file to /lib/.. again!
+
+The RR_MQTT application will write its output to the RR_MQTT.log file in the same directory. The log-level is set by entries in the config.yaml file, which defaults to INFO. If you are running it interactively the console output log defaults to DEBUG.
+
 
 <H2>Application Features</H2>
 
@@ -95,8 +113,8 @@ On startup the RR_MQTT Client will verify access to the Red Reactor and
 set up a connection to the specified MQTT Broker. On successful connection it
 will set the LWT Service topic message to OFF (offline), and publish it's ON status.
 
-If there is a battery status read error, the "RR_READ_Error" status is sent
-on the Service topic.
+If there is a battery status read error, the "RR_Startup_Error" status is sent
+on the Service topic. The Data topic will still carry valid CPU status and temperature information.
 
 <b>Note that even when if the broker connection is lost, the RR_MQTT application
 will continue to check the battery status to ensure a safe shutdown is executed
