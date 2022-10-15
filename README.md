@@ -73,6 +73,9 @@ Head over to the RR_BatMonitor folder (see file listing above) for a background 
 ## Home Automation with our Red Reactor MQTT Client!
 Head over to the RR_MQTT folder (see file listing above) for our first release of our MQTT client to publish full battery status updates to your favourite MQTT Broker and Home Automation system, whilst monitoring the battery voltage to ensure a safe shutdown. Full details are in the readme file.
 
+## Install for Ubuntu 22.04 LTS
+We have now tested the configuration and setup requirements for <b>Ubuntu 22.04 LTS</b> (tested on the 64-bit Desktop edition) and documented the changes you need to apply on our website at https://www.theredreactor.com/2022/10/14/ubuntu/ - please follow these instructions first before adding and using these libraries/applications. Do let us know if your setup is behaving differently!
+
 ### Find out more!
 
 You will find detailed technical information and software configuration guide in the RedReactor User Manual (pdf) - see the above file repository.
