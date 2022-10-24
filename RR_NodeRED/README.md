@@ -1,10 +1,10 @@
 <H1>Red Reactor Node-RED Dashboard</H1>
 
-We're pleased to announce the release of our Node Red Home Automation Dashboard, 
+We're pleased to announce the release of our Node-RED Home Automation Dashboard, 
 which connects to our RR_MQTT client and gives you full visibilty and control 
 of your Red Reactor enabled Pi system!
 
-<img src="RedReactor/RR_NodeRED/RR_NodeRED UI Screenshot.JPG" width="50%"  alt="The Red Reactor Node-RED Dashboard">
+<img src="RR_NodeRED UI Screenshot.JPG" width="75%"  alt="The Red Reactor Node-RED Dashboard" title="Red Reactor Node-RED Dashboard">
 
 <H2> Red Reactor Dashboard Features </H2>
 
@@ -28,13 +28,13 @@ Using all features of the RR_MQTT client, the information is updated at the repo
 
 Please follow the instructions for our RR_MQTT client to install RR_MQTT on your Red Reactor Pi. You will also need an MQTT Broker, such as Mosquito.
 
-Instructions on how to install Node Red, for example on Windowss, can be found here https://nodered.org/docs/getting-started/windows . For this you also first need to install node.js, just be sure to turn off your anti-virus during the install as we found it blocked unzipping some of its files.
+Instructions on how to install Node-RED, for example on Windows, can be found here https://nodered.org/docs/getting-started/windows . For this you also first need to install node.js, just be sure to turn off your anti-virus during the install as we found it blocked unzipping some of its files.
 
 The Red Reactor Dashboard is built with nodes from the node-red-dashboard component, which you need to install from within Node Red - go to User Settings / Palette / Install and search for node-red-dashboard.
 
-Then you can import the Red Reactor Dashboard UI by using the IMPORT function. You then need to configure the hostname of your Red Reactor setup so that the Dashboard can connect to the correct MQTT topic as defined by <hostname>/RedReactor/topic_name, where hostname is taken either directly from your Pi or via the RR_MQTT's config.yaml file.
+Then you can import the Red Reactor Dashboard UI by using the IMPORT function. Inside the Red Reactor Dashboard flow you need to configure the hostname of your Red Reactor setup so that the Dashboard can connect to the correct MQTT topics as defined by <hostname>/RedReactor/topic_name, where hostname is taken either directly from your Pi or via the RR_MQTT's config.yaml file.
 
-You will also need to configure and connect the MQTT nodes to your instance of the MQTT Broker.
+You will also need to configure and connect the MQTT nodes to your instance of the MQTT Broker, having configured the MQTT Broker's IP address in your Node-RED global configuration nodes list.
 
 
 Then simply deploy the dashboard for access via your browser!
@@ -42,15 +42,15 @@ Then simply deploy the dashboard for access via your browser!
 
 <H2> Using the Red Reactor Dashboard </H2>
 
-After deploying the Red Reactor Dashboard, you can check that Node Red has successfully connected to your MQTT broker in its command window. With the Mosquito MQTT Broker, starting it with the -v option gives you good debug feedback about devices and Node Red connections in its own command window.
+After deploying the Red Reactor Dashboard, you can check that Node-RED has successfully connected to your MQTT broker in its command window. With the Mosquito MQTT Broker, starting it with the -v option gives you good debug feedback about devices and Node Red connections in its own command window.
 
-Then, check that the hostname in the top left matches that of your Red Reactor setup, and if correct you will see that the RR_Status should show ON (this is the on-line string as defined by your RR_MQTT config.yaml file).
+Then, check that the hostname in the top left of the UI matches that of your Red Reactor setup, and if correct you will see that the RR_Status should show ON (this is the on-line string as defined by your RR_MQTT config.yaml file).
 
-The configuration sliders can be moved to change their respective parameter values on the fly. The new value is sent on releasing the mouse button and at the next reporting interval the RR_MQTT client will cause the shown values to be updated.
+The configuration sliders can be moved to change their respective parameter values on the fly. The new value is sent on releasing the mouse button and at the next reporting interval the RR_MQTT client will cause the reported values to be updated.
 
 If the CPU is experiencing, or has experienced throttling conditions, this will be reflected in the flags shown with CPU Status. A tooltip will show up when you hovver your mouse pointer over the status field.
 
-When the battery warning level is reached the Red Reactor Dashboard will create a pop-up as a warning. The set percentage is a function of 4.2v - VMIN. You may wish to change both the warning level and VMIN, for example, when operating under high-temperature conditions. It would also be possible to automate such a change by adding a function to the Red Reactor flow in Node Red.
+When the battery warning level is reached the Red Reactor Dashboard will create a pop-up as a warning. The set percentage is a function of 4.2v - VMIN. You may wish to change both the warning level and VMIN, for example, when operating under high-temperature and/or high-current conditions. It would also be possible to automate such a change by adding a function to the Red Reactor flow in Node Red.
 
 
 <H2>HELP!</H2>
