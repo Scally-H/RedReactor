@@ -4,6 +4,8 @@ We're pleased to announce the release of our Node Red Home Automation Dashboard,
 which connects to our RR_MQTT client and gives you full visibilty and control 
 of your Red Reactor enabled Pi system!
 
+<img src="RR_NodeRED UI Screenshot.jpg" width="50%"  alt="The Red Reactor Node-RED Dashboard">
+
 <H2> Red Reactor Dashboard Features </H2>
 
 The Dashboard UI provides you full visibility of your power status, confguration and system control:
