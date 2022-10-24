@@ -182,7 +182,7 @@ def on_message(clientid, userdata, message):
     if "WARN" in message_data.keys():
         try:
             BATTERY_WARN = float(message_data['WARN'])
-            logger.info(f"Changed Warning Threshold to {BATTERY_WARN}V")
+            logger.info(f"Changed Warning Threshold to {BATTERY_WARN}%")
         except ValueError:
             logger.error("Error changing Warning Threshold")
 
@@ -324,7 +324,8 @@ def publish_battery_status(ina, mqtt_client, stop):
                 except (OSError, IndexError, ValueError):
                     # Failed to extract info
                     logger.error("Failed to read CPU info")
-                    cpu_status = 65535
+                    # Set top bit (19:0 = normal data)
+                    cpu_status = 2**20
                     cpu_temp = 0
 
                 rr_battery_status = dict(RR_volts=float("{:.2f}".format(volts)),
@@ -334,7 +335,8 @@ def publish_battery_status(ina, mqtt_client, stop):
                                          RR_CPUTEMP=cpu_temp,
                                          RR_CPUSTAT=cpu_status,
                                          RR_WARN=BATTERY_WARN,
-                                         RR_VMIN=BATTERY_VMIN
+                                         RR_VMIN=BATTERY_VMIN,
+                                         RR_INTERVAL=config['publish_period']
                                          )
                 if client_connected:
                     logger.info("Publishing new data")

@@ -1,0 +1,1638 @@
+[
+    {
+        "id": "b3ddc0d8dc61e0a1",
+        "type": "tab",
+        "label": "RedReactor Dashboard",
+        "disabled": false,
+        "info": "*** RED REACTOR - Copyright (c) 2022\r\n*** Author: Pascal Herczog\r\n\r\nThis code is designed for the RED REACTOR \r\nRaspberry Pi Battery Power Supply\r\nExample code provided without warranty\r\n\r\nNode Red Flow for the Red Reactor\r\nRequires connection to the Red Reactor RR_MQTT client\r\n\r\nYou may use/modify only for use with the RED REACTOR product\r\nFilename: RedReactor_Dashboard.json\r\n\r\nDate: October 2022\r\n\r\nPlease make sure you have configured your MQTT Broker\r\nand set the hostname of your device in this flow.\r\n\r\n-- The Red Reactor Team",
+        "env": []
+    },
+    {
+        "id": "3554ac2d109e61f3",
+        "type": "mqtt in",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "RR-Service Status",
+        "topic": "",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "0014a7709a7e1040",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 1,
+        "x": 410,
+        "y": 320,
+        "wires": [
+            [
+                "fc8a0ac6ee417b29",
+                "2d78a28ce8a299f6",
+                "b9f12db399590586",
+                "b0f8399c4e9fe19e"
+            ]
+        ]
+    },
+    {
+        "id": "2d78a28ce8a299f6",
+        "type": "debug",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "debug Status",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 700,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "fc8a0ac6ee417b29",
+        "type": "ui_text",
+        "z": "b3ddc0d8dc61e0a1",
+        "group": "b964ae1fef64f1b1",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "RR_Service",
+        "label": "RR_STATUS:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 690,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "6011477bf2096fe3",
+        "type": "mqtt in",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "RR-Data Info",
+        "topic": "",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "0014a7709a7e1040",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 1,
+        "x": 390,
+        "y": 500,
+        "wires": [
+            [
+                "9822945d2ad043b9",
+                "acf159aa11367f8f",
+                "633c3ea4f0d31362"
+            ]
+        ]
+    },
+    {
+        "id": "9822945d2ad043b9",
+        "type": "rbe",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "FilterUpdates",
+        "func": "rbe",
+        "gap": "",
+        "start": "",
+        "inout": "out",
+        "septopics": true,
+        "property": "payload",
+        "topi": "topic",
+        "x": 700,
+        "y": 500,
+        "wires": [
+            [
+                "592e01bbdccbb9df",
+                "5ef250f6791fb447",
+                "340f74433c280465",
+                "c607a4bf78125654",
+                "81bc3c5339356ded",
+                "d49401082a07b50e",
+                "6e0d75c96bb1784c",
+                "38098a15c06e7190",
+                "d1db7460cd26d8fb",
+                "699a2cb43db6fdf0",
+                "061125e123ba70c6",
+                "6d12adb111297a87"
+            ]
+        ]
+    },
+    {
+        "id": "633c3ea4f0d31362",
+        "type": "debug",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "Debug Data",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 690,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "592e01bbdccbb9df",
+        "type": "function",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "RR_volts",
+        "func": "msg.payload = msg.payload.RR_volts;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 960,
+        "y": 460,
+        "wires": [
+            [
+                "e7ac4ced44cab2c3",
+                "6d0a7ed4e7d43ece"
+            ]
+        ]
+    },
+    {
+        "id": "5ef250f6791fb447",
+        "type": "function",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "RR_current",
+        "func": "// Extract current and keep track of max charge/discharge values\n// Initialise if not run before\n\nvar max_charge = context.get('max_charge') || 0;\nvar max_discharge = context.get('max_discharge') || 0;\n\nif (msg.payload.RR_current < 0 && msg.payload.RR_current < max_charge) {\n    context.set(\"max_charge\", msg.payload.RR_current)\n} else if (msg.payload.RR_current > 0 && msg.payload.RR_current > max_discharge) {\n    context.set(\"max_discharge\", msg.payload.RR_current)\n}\n\nmsg.payload = msg.payload.RR_current;\nmsg.max_charge = (max_charge) ? max_charge : 0;\nmsg.max_discharge = (max_discharge) ? max_discharge : 0;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 970,
+        "y": 620,
+        "wires": [
+            [
+                "e24a3c4f9722e9b0",
+                "54a3e8e3abc1193e",
+                "89446d348759cf48",
+                "7f1deeda22795ed4"
+            ]
+        ]
+    },
+    {
+        "id": "6b1042634b4267db",
+        "type": "ui_media",
+        "z": "b3ddc0d8dc61e0a1",
+        "group": "b964ae1fef64f1b1",
+        "name": "",
+        "width": "6",
+        "height": "2",
+        "order": 11,
+        "category": "RedReactor",
+        "file": "RR_WebMonitor.jpg",
+        "layout": "center",
+        "showcontrols": true,
+        "loop": true,
+        "onstart": false,
+        "scope": "local",
+        "tooltip": "",
+        "x": 1150,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d999e733935dda81",
+        "type": "ui_text",
+        "z": "b3ddc0d8dc61e0a1",
+        "group": "15a444df521bbda0",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "Hostname",
+        "label": "Hostname:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 380,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "e76d4ba181a0b64c",
+        "type": "debug",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "debug Hostname",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 410,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "df37a73a7df67312",
+        "type": "ui_text",
+        "z": "b3ddc0d8dc61e0a1",
+        "group": "4f73d5394cddb58a",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "BatteryState",
+        "label": "Battery State:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1170,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "340f74433c280465",
+        "type": "function",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "RR_charge",
+        "func": "msg.payload = msg.payload.RR_charge;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 970,
+        "y": 700,
+        "wires": [
+            [
+                "5baff84dcfb6ec1a"
+            ]
+        ]
+    },
+    {
+        "id": "5baff84dcfb6ec1a",
+        "type": "ui_gauge",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "BatteryCharge",
+        "group": "15a444df521bbda0",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "donut",
+        "title": "Battery Charge",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#ff0000",
+            "#ffff00",
+            "#00ff00"
+        ],
+        "seg1": "10",
+        "seg2": "50",
+        "className": "",
+        "x": 1180,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "e24a3c4f9722e9b0",
+        "type": "ui_chart",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "RR_current_chart",
+        "group": "15a444df521bbda0",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "label": "RR Current Chart",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "Current Consumption History",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "100",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1190,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e7ac4ced44cab2c3",
+        "type": "ui_chart",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "RR_voltage_Chart",
+        "group": "15a444df521bbda0",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "label": "RR Voltage Chart",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "auto",
+        "interpolate": "linear",
+        "nodata": "Voltage Level History",
+        "dot": false,
+        "ymin": "2.4",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "100",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1190,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c607a4bf78125654",
+        "type": "function",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "RR_extpower",
+        "func": "if (msg.payload.RR_extpwr == true) {\n    msg.payload = \"USB Power ON\"\n}\nelse {\n    msg.payload = \"NO USB POWER\";\n    node.warn(\"RR: External Power OFF!\");\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 980,
+        "y": 780,
+        "wires": [
+            [
+                "b6f2049a7ff1f9f5",
+                "c191d82b776d0190"
+            ]
+        ]
+    },
+    {
+        "id": "b6f2049a7ff1f9f5",
+        "type": "ui_text",
+        "z": "b3ddc0d8dc61e0a1",
+        "group": "b964ae1fef64f1b1",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "RR_extpower",
+        "label": "External Power",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1180,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "81bc3c5339356ded",
+        "type": "function",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "RR_CPUTEMP",
+        "func": "msg.payload = msg.payload.RR_CPUTEMP;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 980,
+        "y": 840,
+        "wires": [
+            [
+                "aa102ead719d7561"
+            ]
+        ]
+    },
+    {
+        "id": "aa102ead719d7561",
+        "type": "ui_gauge",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "RR_CPUTEMP",
+        "group": "4f73d5394cddb58a",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "CPU Temperature",
+        "label": "C",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "65",
+        "seg2": "80",
+        "className": "",
+        "x": 1180,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "d49401082a07b50e",
+        "type": "function",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "RR_BatState",
+        "func": "var volts = msg.payload.RR_volts;\nvar current = msg.payload.RR_current;\nvar charge = msg.payload.RR_charge;\n// var ext_power = msg.payload.RR_extpower\n\n// status_info = [\"Charging\", \"FULL\", \"Discharging\",\n//                \"BAT LOW\", \"SHUTDOWN\", \"READ ERROR\",\n//                \"NO BATTERY\"]\n\nif (current > 10) {\n    msg.payload = \"Discharging\"\n}\nelse if (current > 0) {\n    msg.payload = \"FULL\"\n}\nelse {\n    msg.payload = \"Charging\"\n}\n\nif (volts >= 4.25) {\n    msg.payload = \"Battery ERROR\"\n}\n\nif (charge < 10) {\n    msg.payload = \"Battery LOW\"\n}\n\nif (charge < 5) {\n    msg.payload = \"Battery EMPTY!\"\n}\n\nif (volts = 0 || current == 6000) {\n    msg.payload = \"READ ERROR\"\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 970,
+        "y": 340,
+        "wires": [
+            [
+                "df37a73a7df67312"
+            ]
+        ]
+    },
+    {
+        "id": "54a3e8e3abc1193e",
+        "type": "ui_text",
+        "z": "b3ddc0d8dc61e0a1",
+        "group": "b964ae1fef64f1b1",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "name": "RR_current",
+        "label": "Battery Current",
+        "format": "{{msg.payload}}mA",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1170,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "6d0a7ed4e7d43ece",
+        "type": "ui_text",
+        "z": "b3ddc0d8dc61e0a1",
+        "group": "b964ae1fef64f1b1",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "name": "RR_volts",
+        "label": "Battery Volts",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1160,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "77e3ac617b9cfe1e",
+        "type": "ui_toast",
+        "z": "b3ddc0d8dc61e0a1",
+        "position": "dialog",
+        "displayTime": "5",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 1,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "",
+        "topic": "msg.payload",
+        "name": "",
+        "x": 1370,
+        "y": 740,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6e0d75c96bb1784c",
+        "type": "function",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "RR_WARN",
+        "func": "msg.payload = msg.payload.RR_WARN;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 970,
+        "y": 900,
+        "wires": [
+            [
+                "23b08c36f854e21b",
+                "d3dc904aeab73018"
+            ]
+        ]
+    },
+    {
+        "id": "23b08c36f854e21b",
+        "type": "ui_text",
+        "z": "b3ddc0d8dc61e0a1",
+        "group": "4f73d5394cddb58a",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "name": "RR_WARN",
+        "label": "Battery Low Warning Level",
+        "format": "{{msg.payload}}%",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1170,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "3b58b99fdfd6f7dc",
+        "type": "ui_slider",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "Set_WARN",
+        "label": "Set Battery Low Warning Level",
+        "tooltip": "Set Battery % warning level, default 10",
+        "group": "4f73d5394cddb58a",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "outs": "end",
+        "topic": "WARN",
+        "topicType": "str",
+        "min": 0,
+        "max": "50",
+        "step": "5",
+        "className": "",
+        "x": 1270,
+        "y": 960,
+        "wires": [
+            [
+                "a6dd58b31f628e9e",
+                "d55e9228b90493ba"
+            ]
+        ]
+    },
+    {
+        "id": "c191d82b776d0190",
+        "type": "rbe",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "FilterExtPwr",
+        "func": "rbe",
+        "gap": "",
+        "start": "",
+        "inout": "out",
+        "septopics": true,
+        "property": "payload",
+        "topi": "topic",
+        "x": 1170,
+        "y": 740,
+        "wires": [
+            [
+                "77e3ac617b9cfe1e"
+            ]
+        ]
+    },
+    {
+        "id": "fdd42e0a5c06e945",
+        "type": "debug",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "Debug Command",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1810,
+        "y": 1300,
+        "wires": []
+    },
+    {
+        "id": "38098a15c06e7190",
+        "type": "function",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "RR_INTERVAL",
+        "func": "msg.payload = msg.payload.RR_INTERVAL;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 980,
+        "y": 1080,
+        "wires": [
+            [
+                "709b04b0469f39f5",
+                "0b85a62b3f17e2ba"
+            ]
+        ]
+    },
+    {
+        "id": "709b04b0469f39f5",
+        "type": "ui_text",
+        "z": "b3ddc0d8dc61e0a1",
+        "group": "4f73d5394cddb58a",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "RR_INTERVAL",
+        "label": "Reporting Interval",
+        "format": "{{msg.payload}}s",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1180,
+        "y": 1080,
+        "wires": []
+    },
+    {
+        "id": "cb9c26d957da086e",
+        "type": "ui_slider",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "Set_Interval",
+        "label": "Set Reporting Interval",
+        "tooltip": "Set battery reporting interval",
+        "group": "4f73d5394cddb58a",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "outs": "end",
+        "topic": "Interval",
+        "topicType": "str",
+        "min": "5",
+        "max": "60",
+        "step": "5",
+        "className": "",
+        "x": 1270,
+        "y": 1140,
+        "wires": [
+            [
+                "a6dd58b31f628e9e"
+            ]
+        ]
+    },
+    {
+        "id": "e530f8e8f96a738a",
+        "type": "mqtt out",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "RR-Command Send",
+        "topic": "",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0014a7709a7e1040",
+        "x": 1820,
+        "y": 1360,
+        "wires": []
+    },
+    {
+        "id": "ce35b4d1a121dec1",
+        "type": "ui_button",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "SHUTDOWN_BUTTON",
+        "group": "4f73d5394cddb58a",
+        "order": 13,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "SHUTDOWN",
+        "tooltip": "Force System Shutdown",
+        "color": "white",
+        "bgcolor": "red",
+        "className": "",
+        "icon": "",
+        "payload": "1",
+        "payloadType": "num",
+        "topic": "Shutdown",
+        "topicType": "str",
+        "x": 1200,
+        "y": 1440,
+        "wires": [
+            [
+                "860b3b6a5c0591cb",
+                "a6dd58b31f628e9e"
+            ]
+        ]
+    },
+    {
+        "id": "860b3b6a5c0591cb",
+        "type": "debug",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "Debug Shutdown Button",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1550,
+        "y": 1440,
+        "wires": []
+    },
+    {
+        "id": "a214c6f94944f38e",
+        "type": "ui_button",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "REBOOT_BUTTON",
+        "group": "15a444df521bbda0",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "REBOOT",
+        "tooltip": "Force System Reboot",
+        "color": "black",
+        "bgcolor": "orange",
+        "className": "",
+        "icon": "",
+        "payload": "1",
+        "payloadType": "num",
+        "topic": "Reboot",
+        "topicType": "str",
+        "x": 1190,
+        "y": 1500,
+        "wires": [
+            [
+                "5bd9147cd16531c5",
+                "a6dd58b31f628e9e"
+            ]
+        ]
+    },
+    {
+        "id": "5bd9147cd16531c5",
+        "type": "debug",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "Debug Reboot Button",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1540,
+        "y": 1500,
+        "wires": []
+    },
+    {
+        "id": "acf159aa11367f8f",
+        "type": "function",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "RR_On_Battery",
+        "func": "// Calculate total on-battery time\n// Creates 2 values, total USB power time, total Battery time\n\n// Initialise if not run before\nvar usb_power = context.get('usb_power') || 0;\nvar bat_power = context.get('bat_power') || 0;\n\nif (msg.payload.RESET) {\n    // Reset the timers\n    context.set(\"usb_power\", 0);\n    context.set(\"bat_power\", 0);\n    usb_power = 0;\n    bat_power = 0;\n} else {\n    if (msg.payload.RR_extpwr == true) {\n        usb_power += msg.payload.RR_INTERVAL;\n        context.set(\"usb_power\", usb_power);\n    } else {\n        bat_power += msg.payload.RR_INTERVAL;\n        context.set(\"bat_power\", bat_power);\n    }\n}\n\n// returns values as seconds for pie-chart\nmsg.payload = [{\n    \"labels\": [\"USB Power\", \"BAT Power\"],\n    \"series\": [\"Power Source\"],\n    \"data\": [[usb_power, bat_power]]\n    \n}]\n\n// Convert usb_power/bat_power time to HH:MM:SS string\nvar Hours = Math.floor((usb_power) / 3600);\nvar Minutes = Math.floor((usb_power - (Hours * 3600)) / 60);\nvar Seconds = (usb_power - (Hours * 3600) - (Minutes * 60));\n// Concatenate\nvar usb_time = ('0' + Hours).slice(-2) + ':' + ('0' + Minutes).slice(-2) + ':' + ('0' + Seconds).slice(-2);\n\nHours = Math.floor((bat_power) / 3600);\nMinutes = Math.floor((bat_power - (Hours * 3600)) / 60);\nSeconds = (bat_power - (Hours * 3600) - (Minutes * 60));\n// Concatenate\nvar bat_time = ('0' + Hours).slice(-2) + ':' + ('0' + Minutes).slice(-2) + ':' + ('0' + Seconds).slice(-2);\n\nmsg.usb_time = usb_time;\nmsg.bat_time = bat_time;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 980,
+        "y": 1720,
+        "wires": [
+            [
+                "b8cf7901d2b2025b",
+                "75cb2437534f9395",
+                "e7b184619b942fb2",
+                "fdd4430ddccf28d8"
+            ]
+        ]
+    },
+    {
+        "id": "b8cf7901d2b2025b",
+        "type": "ui_chart",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "Power_States",
+        "group": "b964ae1fef64f1b1",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "label": "Power States",
+        "chartType": "pie",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "Shows USB vs. Battery Power Usage",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#00ff00",
+            "#ff0000",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1340,
+        "y": 1720,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d1db7460cd26d8fb",
+        "type": "function",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "RR_batlow-Warning",
+        "func": "// Check for Battery LOW state and issue warning\n// Just 1 warning for bat-low / bat-empty\n\n// Initialise if not run before\nvar bat_warn = context.get('bat_warn') || 0;\n\nif (msg.payload.RR_charge < msg.payload.RR_WARN) {\n    if (bat_warn == 0) {\n        context.set('bat_warn', 1);\n        node.warn(\"BATTERY LOW WARNING!\\nCheck Power Supply\");\n    }\n}\nif (msg.payload.RR_charge < 2) {\n    if (bat_warn == 1) {\n        context.set('bat_warn', 2);\n        node.warn(\"BATTERY EMPTY WARNING!\\nImminent Shutdown\");\n    }\n}\n\nif (msg.payload.RR_charge > msg.payload.RR_WARN) {\n    context.set('bat_warn', 0);\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1000,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "699a2cb43db6fdf0",
+        "type": "function",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "RR_CPUSTAT",
+        "func": "// Convert CPU STAT to short-hand messages, use tooltip as aid\n// Values are based on 20-bit fields sent as INT\n// DFTU-------------HCSV\n// 1111 0000 0000 0000 1111\n// ||||                ||||__ under - voltage\n// ||||                |||___ currently throttled\n// ||||                ||____ arm frequency capped\n// ||||                |_____ soft temperature reached\n// ||||__ under - voltage has occurred since last reboot\n// |||___ throttling has occurred since last reboot\n// ||____ arm frequency capped has occurred since last reboot\n// |_____ soft temperature reached since last reboot\n\n// Convert CPU info to 20 char bit-string, bit 20 is [0]\nvar cpu_stat = Number(msg.payload.RR_CPUSTAT).toString(2).padStart(19, \"0\");\n\nif (msg.payload.RR_CPUSTAT == 0) {\n    msg.payload = \"ALL OK\"\n}\nelse{\n    let cpu_info = \"FLAGS: \";\n\n    if (cpu_stat[0] == \"1\") {\n        cpu_info += \"RD ERROR\"\n    }\n    else{\n        cpu_info += (cpu_stat[1] == \"1\") ? 'D' : '-';\n        cpu_info += (cpu_stat[2] == \"1\") ? 'F' : '-';\n        cpu_info += (cpu_stat[3] == \"1\") ? 'T' : '-';\n        cpu_info += (cpu_stat[4] == \"1\") ? 'U' : '-';\n    \n        cpu_info += \" - \";\n\n        cpu_info += (cpu_stat[16] == \"1\") ? 'H' : '-';\n        cpu_info += (cpu_stat[17] == \"1\") ? 'C' : '-';\n        cpu_info += (cpu_stat[18] == \"1\") ? 'S' : '-';\n        cpu_info += (cpu_stat[19] == \"1\") ? 'V' : '-';\n    }\n\n    msg.payload = cpu_info;\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 980,
+        "y": 1600,
+        "wires": [
+            [
+                "fdbe683523b86c03"
+            ]
+        ]
+    },
+    {
+        "id": "e206fc331fb2c499",
+        "type": "ui_template",
+        "z": "b3ddc0d8dc61e0a1",
+        "group": "4f47a445ed561501",
+        "name": "CSS-Tooltip",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "format": "<style>\n    .tooltip {\n        position: relative;\n        display: inline-block;\n        border-bottom: 1px dotted black;\n    }\n\n    .tooltip .tooltiptext {\n        font-family: monospace;\n        visibility: hidden;\n        /* width: 240px;*/\n        width: max-content;\n        background-color: black;\n        color: #fff;\n        text-align: left;\n        border-radius: 6px;\n        padding: 5px 10px;\n\n        /* Position the tooltip */\n        position: absolute;\n        z-index: 1;\n        top: 110%;\n        right: 0%;\n        margin-left: 0px;\n\n        /* Fade in for 1 second */\n        opacity: 0;\n        transition: opacity 1s;\n    }\n\n    .tooltip:hover .tooltiptext {\n        visibility: visible;      \n        opacity: 1;\n    }\n</style>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "global",
+        "className": "",
+        "x": 1170,
+        "y": 1640,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "89446d348759cf48",
+        "type": "ui_text",
+        "z": "b3ddc0d8dc61e0a1",
+        "group": "b964ae1fef64f1b1",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "name": "MaxCharge",
+        "label": "Max Charge Current",
+        "format": "{{msg.max_charge}}mA",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1170,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "7f1deeda22795ed4",
+        "type": "ui_text",
+        "z": "b3ddc0d8dc61e0a1",
+        "group": "b964ae1fef64f1b1",
+        "order": 9,
+        "width": 0,
+        "height": 0,
+        "name": "MaxDisharge",
+        "label": "Max Disharge Current",
+        "format": "{{msg.max_discharge}}mA",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1170,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "75cb2437534f9395",
+        "type": "ui_text",
+        "z": "b3ddc0d8dc61e0a1",
+        "group": "b964ae1fef64f1b1",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "USB_Power",
+        "label": "USB Power Time",
+        "format": "{{msg.usb_time}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1330,
+        "y": 1760,
+        "wires": []
+    },
+    {
+        "id": "e7b184619b942fb2",
+        "type": "ui_text",
+        "z": "b3ddc0d8dc61e0a1",
+        "group": "b964ae1fef64f1b1",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "name": "BAT_Power",
+        "label": "BAT Power Time",
+        "format": "{{msg.bat_time}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1330,
+        "y": 1800,
+        "wires": []
+    },
+    {
+        "id": "fdd4430ddccf28d8",
+        "type": "debug",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "Debug ON BATTERY",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1220,
+        "y": 1860,
+        "wires": []
+    },
+    {
+        "id": "fdbe683523b86c03",
+        "type": "template",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "Tooltip",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<div class=\"tooltip\">{{payload}}\n  <span class=\"tooltiptext\">Since Boot&nbsp;&nbsp;-&nbsp;&nbsp;Active Now<br>\nD = Temp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H = Temp limited<br>\nF = Freq&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C = Freq capped<br>\nT = Throttled&nbsp;&nbsp;S = Throttling<br>\nU = Voltage&nbsp;&nbsp;&nbsp;&nbsp;V = Under-Voltage</span>\n</div>",
+        "output": "str",
+        "x": 1150,
+        "y": 1600,
+        "wires": [
+            [
+                "73d7ab816228fd93"
+            ]
+        ]
+    },
+    {
+        "id": "061125e123ba70c6",
+        "type": "function",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "RR_VMIN",
+        "func": "msg.payload = msg.payload.RR_VMIN;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 960,
+        "y": 1220,
+        "wires": [
+            [
+                "1c4449132e487f2f",
+                "0433592d8ca9fe63"
+            ]
+        ]
+    },
+    {
+        "id": "1c4449132e487f2f",
+        "type": "ui_text",
+        "z": "b3ddc0d8dc61e0a1",
+        "group": "4f73d5394cddb58a",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "name": "RR_VMIN",
+        "label": "VMIN Level",
+        "format": "{{msg.payload}}v",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1160,
+        "y": 1220,
+        "wires": []
+    },
+    {
+        "id": "9fc8b68d2d963b36",
+        "type": "ui_slider",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "Set_VMIN",
+        "label": "Set VMIN Level",
+        "tooltip": "Set battery VMIN shutdown level",
+        "group": "4f73d5394cddb58a",
+        "order": 9,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "outs": "end",
+        "topic": "VMIN",
+        "topicType": "str",
+        "min": "2.5",
+        "max": "3.3",
+        "step": "0.05",
+        "className": "",
+        "x": 1260,
+        "y": 1280,
+        "wires": [
+            [
+                "a6dd58b31f628e9e"
+            ]
+        ]
+    },
+    {
+        "id": "6d12adb111297a87",
+        "type": "function",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "RR_TEMP_WARN",
+        "func": "// Future option\n// Auto adjust RR_WARN based on temperature and current\n// needs to adjust up and down within set limits...\n\n// var cpu_temp = msg.payload.CPU_TEMP;\n// var bat_current = msg.payload.RR_current;\n// var bat_warn = msg.payload.RR_WARN;\n\n// if (cpu_temp > 60 && bat_current > 2500) {\n\n// } else {\n\n// }\n// return msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 990,
+        "y": 1020,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "73d7ab816228fd93",
+        "type": "ui_text",
+        "z": "b3ddc0d8dc61e0a1",
+        "group": "b964ae1fef64f1b1",
+        "order": 10,
+        "width": 0,
+        "height": 0,
+        "name": "CPU_STATUS",
+        "label": "CPU Status",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1330,
+        "y": 1600,
+        "wires": []
+    },
+    {
+        "id": "0433592d8ca9fe63",
+        "type": "rbe",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "",
+        "func": "rbe",
+        "gap": "",
+        "start": "",
+        "inout": "out",
+        "septopics": true,
+        "property": "payload",
+        "topi": "topic",
+        "x": 1110,
+        "y": 1280,
+        "wires": [
+            [
+                "9fc8b68d2d963b36"
+            ]
+        ]
+    },
+    {
+        "id": "0b85a62b3f17e2ba",
+        "type": "rbe",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "",
+        "func": "rbe",
+        "gap": "",
+        "start": "",
+        "inout": "out",
+        "septopics": true,
+        "property": "payload",
+        "topi": "topic",
+        "x": 1110,
+        "y": 1140,
+        "wires": [
+            [
+                "cb9c26d957da086e"
+            ]
+        ]
+    },
+    {
+        "id": "d3dc904aeab73018",
+        "type": "rbe",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "",
+        "func": "rbe",
+        "gap": "",
+        "start": "",
+        "inout": "out",
+        "septopics": true,
+        "property": "payload",
+        "topi": "topic",
+        "x": 1110,
+        "y": 960,
+        "wires": [
+            [
+                "3b58b99fdfd6f7dc"
+            ]
+        ]
+    },
+    {
+        "id": "601140a91a4652c4",
+        "type": "change",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "ConfigMQTT_Service",
+        "rules": [
+            {
+                "t": "set",
+                "p": "action",
+                "pt": "msg",
+                "to": "subscribe",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "$$.payload & \"/RedReactor/Service\"",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 180,
+        "y": 320,
+        "wires": [
+            [
+                "3554ac2d109e61f3"
+            ]
+        ]
+    },
+    {
+        "id": "0bce2089eebc7aaf",
+        "type": "change",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "ConfigMQTT_Data",
+        "rules": [
+            {
+                "t": "set",
+                "p": "action",
+                "pt": "msg",
+                "to": "subscribe",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "$$.payload & \"/RedReactor/Data\"",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 170,
+        "y": 500,
+        "wires": [
+            [
+                "6011477bf2096fe3"
+            ]
+        ]
+    },
+    {
+        "id": "b9f12db399590586",
+        "type": "function",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "Offline_Reset",
+        "func": "// If device goes offline then trigger a 'zero' Data push to clear dashboard\n// Takes the Service Status value (\"OFF\" - but change if you used 'Offline' etc)\n\nif (msg.payload == \"OFF\"){\n    msg.payload = {\n        \"RR_volts\": 0,\n        \"RR_current\": 0,\n        \"RR_charge\": 0,\n        \"RR_extpwr\": false,\n        \"RR_CPUTEMP\": 0,\n        \"RR_CPUSTAT\": 0,\n        \"RR_WARN\": 10,\n        \"RR_VMIN\": 2.9,\n        \"RR_Interval\": 30\n    }\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "dd2b322a2dfe6a07",
+        "type": "inject",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "Hostname",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "raspberrypi0w",
+        "payloadType": "str",
+        "x": 150,
+        "y": 180,
+        "wires": [
+            [
+                "e76d4ba181a0b64c",
+                "d999e733935dda81",
+                "601140a91a4652c4",
+                "0bce2089eebc7aaf",
+                "75ff5c3749ec8d5f"
+            ]
+        ]
+    },
+    {
+        "id": "75ff5c3749ec8d5f",
+        "type": "function",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "Set_Command",
+        "func": "// Set flow variable to Command Topic Name\nflow.set(\"RR_Command\", msg.payload + \"/RedReactor/Command\");\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 180,
+        "wires": [
+            []
+        ],
+        "info": "Function sets global Command variable to RR Command topic name"
+    },
+    {
+        "id": "a6dd58b31f628e9e",
+        "type": "change",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "ConfigMQTT_Command",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{$$.topic: $$.payload}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "RR_Command",
+                "tot": "flow"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1550,
+        "y": 1360,
+        "wires": [
+            [
+                "fdd42e0a5c06e945",
+                "e530f8e8f96a738a"
+            ]
+        ]
+    },
+    {
+        "id": "d55e9228b90493ba",
+        "type": "debug",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "Debug SetWARN",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1530,
+        "y": 960,
+        "wires": []
+    },
+    {
+        "id": "dbfd38a750644aa9",
+        "type": "comment",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "Instructions",
+        "info": "# Installation of the Red Reactor Dashboard\n\n## Hostname\nPlease edit the Hostname Injection Node (blue) \nand set the payload text entry to that of your Pi's Hostname\nor as defined in your RR_MQTT config.yaml file\n\n## MQTT Broker Address\nPlease also ensure that your MQTT server address in the\nGlobal Configuration Nodes is correctly set and the name\ngiven is applied to the RR-Service / RR-Data and RR-Command MQTT nodes\n\n## Deployment\nThen Deploy the Red Reactor Dashboard!\n\nYou can verify communications via the MQTT Broker/Node Red command windows\n\n(c) 2022 - The Red Reactor",
+        "x": 130,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "b0f8399c4e9fe19e",
+        "type": "function",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "Set_Status",
+        "func": "// Set flow variable to Device Status\n// Note, assumes RR_Service Status is ON or OFF\n// If changed via config.yaml, please convert here\nflow.set(\"RR_Service\", msg.payload);",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 690,
+        "y": 380,
+        "wires": [
+            []
+        ],
+        "info": "Function sets global Command variable to RR Command topic name"
+    },
+    {
+        "id": "4d5ec440c36e0f80",
+        "type": "function",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "RR_GetDefaults",
+        "func": "// Function not used, for future version\n// Capture first ON data set and record as defaults\n// Used by RESET button to reset sliders\n\n// Initialise if not run before\nvar RR_GetDefaults = context.get('RR_GetDefaults') || true;\n\nvar RR_Interval = flow.get(\"RR_Interval\") || 0;\nvar RR_WARN = flow.get(\"RR_WARN\") || 0;\nvar RR_VMIN = flow.get(\"RR_VMIN\") || 0;\n\n// Get current service status if set else assume OFF\nvar RR_online = flow.get(\"RR_Service\") || \"OFF\";\n\nif (RR_GetDefaults == true &&  RR_online == \"ON\") {\n    flow.set('RR_Interval', msg.payload.RR_Interval);\n    flow.set('RR_WARN', msg.payload.RR_WARN);\n    flow.set('RR_VMIN', msg.payload.RR_VMIN);\n    context.set(\"RR_GetDefaults\", false);\n}\n\nif (RR_online == \"OFF\"){\n    context.set(\"RR_GetDefaults\", true);\n}\n\n// send values for debug info\nmsg.payload = {\n    \"RR_Interval\": RR_Interval,\n    \"RR_WARN\": RR_WARN,\n    \"RR_VMIN\": RR_VMIN\n}\nreturn msg",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 720,
+        "wires": [
+            [
+                "4495789d83e2c1a2"
+            ]
+        ]
+    },
+    {
+        "id": "2103778e3083795b",
+        "type": "ui_button",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "RESET",
+        "group": "4f73d5394cddb58a",
+        "order": 11,
+        "width": "0",
+        "height": "0",
+        "passthru": false,
+        "label": "RESET Timers",
+        "tooltip": "Use to reset power usage timebases",
+        "color": "yellow",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "RESET",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 140,
+        "y": 1060,
+        "wires": [
+            [
+                "207b0e251b229f83"
+            ]
+        ]
+    },
+    {
+        "id": "207b0e251b229f83",
+        "type": "function",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "RR_RESET",
+        "func": "// Triggered to reset timers\n\nflow.set(\"usb_power\", 0);\nflow.set(\"bat_power\", 0);\n\nmsg.payload = { \"RESET\": 1 };\n\n// Future option to reset config data\n\n// var RR_Interval = flow.get(\"RR_Interval\") || 0;\n// var RR_WARN = flow.get(\"RR_WARN\") || 0;\n// var RR_VMIN = flow.get(\"RR_VMIN\") || 0;\n\n// // Get current service status if set else assume OFF\n// var RR_online = flow.get(\"RR_Service\") || \"OFF\";\n\n// if (RR_online == \"ON\") {\n//\n//     msg.payload = {\n//         \"RESET\": 1,\n//         \"RR_Interval\": RR_Interval,\n//         \"RR_WARN\": RR_WARN,\n//         \"RR_VMIN\": RR_VMIN\n//     }\n// }\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 1060,
+        "wires": [
+            [
+                "acf159aa11367f8f",
+                "61179604a7ba3dce"
+            ]
+        ]
+    },
+    {
+        "id": "4495789d83e2c1a2",
+        "type": "debug",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "Debug GetDefaults",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 670,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "61179604a7ba3dce",
+        "type": "debug",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "Debug ON BATTERY",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 420,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "60494f8ab06b6fa9",
+        "type": "ui_spacer",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "spacer",
+        "group": "4f73d5394cddb58a",
+        "order": 10,
+        "width": "1",
+        "height": "1"
+    },
+    {
+        "id": "6dee7ea20a063979",
+        "type": "ui_spacer",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "spacer",
+        "group": "4f73d5394cddb58a",
+        "order": 12,
+        "width": "6",
+        "height": "1"
+    },
+    {
+        "id": "aa58186e891ef61b",
+        "type": "ui_spacer",
+        "z": "b3ddc0d8dc61e0a1",
+        "name": "spacer",
+        "group": "4f73d5394cddb58a",
+        "order": 3,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "0014a7709a7e1040",
+        "type": "mqtt-broker",
+        "name": "Mosquito-MQTT",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "b964ae1fef64f1b1",
+        "type": "ui_group",
+        "name": "RR_Group2",
+        "tab": "15cf5f0fec1a4f47",
+        "order": 2,
+        "disp": false,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "15a444df521bbda0",
+        "type": "ui_group",
+        "name": "RR_Group1",
+        "tab": "15cf5f0fec1a4f47",
+        "order": 1,
+        "disp": false,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "4f73d5394cddb58a",
+        "type": "ui_group",
+        "name": "RR_Group3",
+        "tab": "15cf5f0fec1a4f47",
+        "order": 3,
+        "disp": false,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "4f47a445ed561501",
+        "type": "ui_group",
+        "name": "TestGroup2",
+        "tab": "1f9d343f78b1f70d",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "15cf5f0fec1a4f47",
+        "type": "ui_tab",
+        "name": "RedReactor",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "1f9d343f78b1f70d",
+        "type": "ui_tab",
+        "name": "Test",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
