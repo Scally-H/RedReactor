@@ -8,7 +8,7 @@ of your Red Reactor enabled Pi system!
 
 <H2> Red Reactor Dashboard Features </H2>
 
-The Dashboard UI provides you full visibility of your power status, confguration and system control:
+The Dashboard UI provides you full visibility of your power status, configuration and system control:
 
 The dashboard is divided into 3 groups of information:
 
