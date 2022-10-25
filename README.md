@@ -78,7 +78,7 @@ We have now tested the configuration and setup requirements for <b>Ubuntu 22.04 
 
 ## Red Reactor Node-RED Dashboard
 
-Check out our new release of our Red Reactor Node-RED Home Automation Dashboard, which connects to our RR_MQTT client and gives you full visibility and control of your Red Reactor enabled Pi system! Easy to extend to fully automate your own control functions (e.g. alter the battery warning level under high load and temperature), or deploy for multiple devices, you can find out more about the setup on our website at https://www.theredreactor.com/2022/10/25/node-red/ with installation details in our RR_NodeRed folder above. We're looking forward to your suggestions for additional features!
+Check out our new release of our Red Reactor Node-RED Home Automation Dashboard, which connects to our RR_MQTT client and gives you full visibility and control of your Red Reactor enabled Pi system! Easy to extend to fully automate your own control functions (e.g. alter the battery warning level under high load and temperature), or deploy for multiple devices, you can find out more about the setup on our website at https://www.theredreactor.com/2022/10/25/node-red/ with installation details in our RR_NodeRED folder above (https://github.com/Scally-H/RedReactor/tree/main/RR_NodeRED). We're looking forward to your suggestions for additional features!
 
 ### Find out more!
 
