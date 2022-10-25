@@ -1,7 +1,7 @@
 <H1>Red Reactor Node-RED Dashboard</H1>
 
 We're pleased to announce the release of our Node-RED Home Automation Dashboard, 
-which connects to our RR_MQTT client and gives you full visibilty and control 
+which connects to our RR_MQTT client and gives you full visibility and control 
 of your Red Reactor enabled Pi system!
 
 <img src="RR_NodeRED UI Screenshot.JPG" width="75%"  alt="The Red Reactor Node-RED Dashboard" title="Red Reactor Node-RED Dashboard">
@@ -18,7 +18,7 @@ The dashboard is divided into 3 groups of information:
 
 Along with buttons for REBOOT and SHUTDOWN, the Red Reactor flow will actively monitor the conditions and provide pop-up warnings as certain status elements change, such as loss/restoration of external power, as well as battery low and imminent shutdown info.
 
-The configuration sliders allow you to adjust the settings, and when updated by the RR_MQTT client the new values are reported back for confirmation of status. Note that this only happens at the next reporting interval.
+The configuration sliders allow you to adjust the settings, and when updated by the RR_MQTT client the new values are reported back for confirmation of status. Note that this happens at the next reporting interval.
 
 The CPU status provides an easy to use decoded text about throttling conditions, with a mouse pop-up to explain the status fields.
 
@@ -30,7 +30,7 @@ Please follow the instructions for our RR_MQTT client to install RR_MQTT on your
 
 Instructions on how to install Node-RED, for example on Windows, can be found here https://nodered.org/docs/getting-started/windows . For this you also first need to install node.js, just be sure to turn off your anti-virus during the install as we found it blocked unzipping some of its files.
 
-The Red Reactor Dashboard is built with nodes from the node-red-dashboard component, which you need to install from within Node Red - go to User Settings / Palette / Install and search for node-red-dashboard.
+The Red Reactor Dashboard is built with nodes from the node-red-dashboard component, which you need to install from within Node Red - go to User Settings / Palette / Install and search for node-red-dashboard. It also uses a media display node, for which you need to install node-red-contrib-ui-media.
 
 Then you can import the Red Reactor Dashboard UI by using the IMPORT function. Inside the Red Reactor Dashboard flow you need to configure the hostname of your Red Reactor setup so that the Dashboard can connect to the correct MQTT topics as defined by <hostname>/RedReactor/topic_name, where hostname is taken either directly from your Pi or via the RR_MQTT's config.yaml file.
 
