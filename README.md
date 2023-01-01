@@ -3,7 +3,7 @@
   
   Welcome to the sample code and documentation for the Red Reactor, the ultimate battery power supply for all your Raspberry Pi projects.</b>
   
-** Our Kickstarter campaign has now finished, so we are getting ready for production! We will be going live with a pre-order form shortly in case you missed our campaign or would like to order more units, please check our website at https://www.theredreactor.com/ **
+** Our Kickstarter campaign has now finished, so we are getting ready for production! We are live with a pre-order form in case you missed our campaign or would like to order more units, please check our website at https://www.theredreactor.com/ **
 
 But you can still see the story of our campaign journey on our <a href="https://www.kickstarter.com/projects/pascal-h/the-red-reactor-when-power-really-matters">Kickstarter page</a>, which also shows customer comments and our technology updates.
 
@@ -89,9 +89,9 @@ We have created a first version of the mechanical drawing and 3D model of the Re
 # Production Status
 We will update this section with live information about our production status:
 - Kickstarter campaign successfully completed on Nov 12th, 2022
-- Awaiting funds from Kickstarter
-- Finalising production order with <a href="https://www.pcbway.com/">PCBWAY</a>, where we are part of their <a href="https://www.theredreactor.com/2022/07/06/targetlaunchdate/">Crowdfunding Sponsorship Program</a>
-   - Their support has been amazing, and you will find a special discount voucher on our site for your own designs!
+- PCB Manufacturing started mid-November with <a href="https://www.pcbway.com/">PCBWAY</a>, where we are part of their <a href="https://www.theredreactor.com/2022/07/06/targetlaunchdate/">Crowdfunding Sponsorship Program</a>
+- Funds received from Kickstarter
+- PCB panels complete early December, component assembly in progress
 
 ## Find out more!
 
