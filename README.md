@@ -3,7 +3,9 @@
   
   Welcome to the sample code and documentation for the Red Reactor, the ultimate battery power supply for all your Raspberry Pi projects.</b>
   
-**We are now live on Kickstarter! So please visit us at https://www.kickstarter.com/projects/pascal-h/the-red-reactor-when-power-really-matters for some great options!**
+** Our Kickstarter campaign has now finished, so we are getting ready for production! We are live with a pre-order form in case you missed our campaign or would like to order more units, please check our website at https://www.theredreactor.com/ **
+
+But you can still see the story of our campaign journey on our <a href="https://www.kickstarter.com/projects/pascal-h/the-red-reactor-when-power-really-matters">Kickstarter page</a>, which also shows customer comments and our technology updates.
 
 <img src="RedReactor Pi UPS.jpg" width="50%"  alt="The Red Reactor Raspberry Pi 18650 UPS">
 
@@ -76,12 +78,27 @@ Head over to the RR_MQTT folder (see file listing above) for our first release o
 ## Install for Ubuntu 22.04 LTS
 We have now tested the configuration and setup requirements for <b>Ubuntu 22.04 LTS</b> (tested on the 64-bit Desktop edition) and documented the changes you need to apply on our website at https://www.theredreactor.com/2022/10/14/ubuntu/ - please follow these instructions first before adding and using these libraries/applications. Do let us know if your setup is behaving differently!
 
-### Find out more!
+## Red Reactor Node-RED Dashboard
+
+Check out our new release of our Red Reactor Node-RED Home Automation Dashboard, which connects to our RR_MQTT client and gives you full visibility and control of your Red Reactor enabled Pi system! Easy to extend to fully automate your own control functions (e.g. alter the battery warning level under high load and temperature), or deploy for multiple devices, you can find out more about the setup on our website at https://www.theredreactor.com/2022/10/25/node-red/ with installation details in our RR_NodeRED folder above (https://github.com/Scally-H/RedReactor/tree/main/RR_NodeRED). We're looking forward to your suggestions for additional features!
+
+## NEW: Mechanical drawing and 3D Models for your custom case designs
+
+We have created a first version of the mechanical drawing and 3D model of the Red Reactor to support you in creating your custom case desigs. We will release these files through this GitHub repository after formal review, until then you can view them on our <a href="https://www.theredreactor.com/news/">news site</a>.
+
+# Production Status
+We will update this section with live information about our production status:
+- Kickstarter campaign successfully completed on Nov 12th, 2022
+- PCB Manufacturing started mid-November with <a href="https://www.pcbway.com/">PCBWAY</a>, where we are part of their <a href="https://www.theredreactor.com/2022/07/06/targetlaunchdate/">Crowdfunding Sponsorship Program</a>
+- Funds received from Kickstarter
+- PCB panels complete early December, component assembly in progress
+
+## Find out more!
 
 You will find detailed technical information and software configuration guide in the RedReactor User Manual (pdf) - see the above file repository.
 
 For additional help feel free to ask questions, and check out the Youtube channel at https://www.youtube.com/channel/UC3rKXVp0QUgYTzju2NIGytA or contact us on hello@theredreactor.com - we'd love to hear from you.
 
-The Red Reactor is now LIVE on Kickstarter at https://www.kickstarter.com/projects/pascal-h/the-red-reactor-when-power-really-matters
+For more news and regular updates, please visit us at <a href="https://www.theredreactor.com/">www.theredreactor.com</a>
 
 We look forward to seeing you there!
