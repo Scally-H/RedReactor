@@ -90,12 +90,13 @@ We have created a first version of the mechanical drawing and 3D model of the Re
 We will update this section with live information about our production status:
 - Kickstarter campaign successfully completed on Nov 12th, 2022
 - PCB Manufacturing started mid-November with <a href="https://www.pcbway.com/">PCBWAY</a>, where we are part of their <a href="https://www.theredreactor.com/2022/07/06/targetlaunchdate/">Crowdfunding Sponsorship Program</a>
-- Funds received from Kickstarter
-- PCB panels complete early December, component assembly in progress
+- PCB's received mid-January
+- Shipping started mnid-February
+- Testing and shipping on-going
 
 ## Find out more!
 
-You will find detailed technical information and software configuration guide in the RedReactor User Manual (pdf) - see the above file repository.
+You will find detailed technical information and software configuration guide in the RedReactor User Manual (pdf) - see the above file repository. We've now added a version history (v1.8) to summarise any changes.
 
 For additional help feel free to ask questions, and check out the Youtube channel at https://www.youtube.com/channel/UC3rKXVp0QUgYTzju2NIGytA or contact us on hello@theredreactor.com - we'd love to hear from you.
 
