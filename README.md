@@ -3,7 +3,7 @@
   
   Welcome to the sample code and documentation for the Red Reactor, the ultimate battery power supply for all your Raspberry Pi projects.</b>
   
-** Our Kickstarter campaign has now finished, so we are getting ready for production! We are live with a pre-order form in case you missed our campaign or would like to order more units, please check our website at https://www.theredreactor.com/ **
+** Our Kickstarter campaign has now finished, so we are busy with testing and shipping boards! We are live with a pre-order form in case you missed our campaign or would like to order more units, please check our website at https://www.theredreactor.com/ **
 
 But you can still see the story of our campaign journey on our <a href="https://www.kickstarter.com/projects/pascal-h/the-red-reactor-when-power-really-matters">Kickstarter page</a>, which also shows customer comments and our technology updates.
 
