@@ -92,7 +92,8 @@ We will update this section with live information about our production status:
 - PCB Manufacturing started mid-November with <a href="https://www.pcbway.com/">PCBWAY</a>, where we are part of their <a href="https://www.theredreactor.com/2022/07/06/targetlaunchdate/">Crowdfunding Sponsorship Program</a>
 - PCB's received mid-January
 - Shipping started mnid-February
-- Testing and shipping on-going
+- As of March 31st, we have now shipped over 700 units!
+- But we have more available to order via our website at https://www.theredreactor.com/pre-order/
 
 ## Find out more!
 
