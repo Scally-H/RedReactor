@@ -90,7 +90,7 @@ We have created a first version of the mechanical drawing and 3D model of the Re
 - Kickstarter campaign successfully completed on Nov 12th, 2022
 - PCB Manufacturing started mid-November with <a href="https://www.pcbway.com/">PCBWAY</a>, where we are part of their <a href="https://www.theredreactor.com/2022/07/06/targetlaunchdate/">Crowdfunding Sponsorship Program</a>
 - PCB's received mid-January, running every board through our test program
-- Shipping started mnid-February
+- Shipping started mid-February
 - As of March 31st, we had shipped over 700 units!
 - <b>Completed all Kickstarter shipments by May'23</b>
 - <b>Check out the great reviews at</b> https://www.theredreactor.com/reviews/
