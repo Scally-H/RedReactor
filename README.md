@@ -87,7 +87,6 @@ Check out our new release of our Red Reactor Node-RED Home Automation Dashboard,
 We have created a first version of the mechanical drawing and 3D model of the Red Reactor to support you in creating your custom case desigs. We will release these files through this GitHub repository after formal review, until then you can view them on our <a href="https://www.theredreactor.com/news/">news site</a>.
 
 # Production Status
-We will update this section with live information about our production status:
 - Kickstarter campaign successfully completed on Nov 12th, 2022
 - PCB Manufacturing started mid-November with <a href="https://www.pcbway.com/">PCBWAY</a>, where we are part of their <a href="https://www.theredreactor.com/2022/07/06/targetlaunchdate/">Crowdfunding Sponsorship Program</a>
 - PCB's received mid-January, running every board through our test program
