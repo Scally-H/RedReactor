@@ -63,7 +63,12 @@ Then type the following into the address bar (substiture your actual IP address,
   
 This should show you a page like this:
 <img src="RR_WebMon - screenshot.JPG" width="90%"  alt="The Red Reactor Remote Monitor WebApp">
-  
+
+Simply edit the configuration parameters on the webpage and hit 'Submit' to update the server. The battery is checked every 5 seconds (used for averaged reading values) and the server will be forced to shutdown safely when the battery reaches BATTERY_VMIN (in RR_WebBat.py), set to 2.9v by default. The battery status colour changes for these battery %'s: 0-9, 10-19, 20-39, 40-59, 60-79, 80-99, FULL (charge complete)
+
+<h2>Where can I get a Red Reactor?</h2>
+You can order your Red Reactor from our website at https://www.theredreactor.com/pre-order/ - simply fill in the form and we'll email you an invoice. Pay by Paypal and we'll ship straight away! 
+
 Further information can be found on our website, at https://www.theredreactor.com
   
 Please write to hello@theredreactor.com if you have any feedback or problem with this repository. Your input is appreciated!
