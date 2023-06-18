@@ -3,7 +3,7 @@
   
   Welcome to the sample code and documentation for the Red Reactor, the ultimate battery power supply for all your Raspberry Pi projects.</b>
   
-** Our Kickstarter campaign has now finished, so we are busy with testing and shipping boards! We are live with a pre-order form in case you missed our campaign or would like to order more units, please check our website at https://www.theredreactor.com/ **
+** Our Kickstarter campaign has now finished, <b>and we have completed shipping nearly a thousand units to all our backers!</b> We are live with a pre-order form in case you missed our campaign or would like to order more units, please check our website at https://www.theredreactor.com/ - and <b>check out our reviews page at</b> https://www.theredreactor.com/reviews/ **
 
 But you can still see the story of our campaign journey on our <a href="https://www.kickstarter.com/projects/pascal-h/the-red-reactor-when-power-really-matters">Kickstarter page</a>, which also shows customer comments and our technology updates.
 
@@ -87,12 +87,15 @@ Check out our new release of our Red Reactor Node-RED Home Automation Dashboard,
 We have created a first version of the mechanical drawing and 3D model of the Red Reactor to support you in creating your custom case desigs. We will release these files through this GitHub repository after formal review, until then you can view them on our <a href="https://www.theredreactor.com/news/">news site</a>.
 
 # Production Status
-We will update this section with live information about our production status:
 - Kickstarter campaign successfully completed on Nov 12th, 2022
 - PCB Manufacturing started mid-November with <a href="https://www.pcbway.com/">PCBWAY</a>, where we are part of their <a href="https://www.theredreactor.com/2022/07/06/targetlaunchdate/">Crowdfunding Sponsorship Program</a>
-- PCB's received mid-January
-- Shipping started mnid-February
-- Testing and shipping on-going
+- PCB's received mid-January, running every board through our test program
+- Shipping started mid-February
+- As of March 31st, we had shipped over 700 units!
+- <b>Completed all Kickstarter shipments by May'23</b>
+- <b>Check out the great reviews at</b> https://www.theredreactor.com/reviews/
+- You can order <i>your Red Reactor and Pogo-pins</i> via our website at https://www.theredreactor.com/pre-order/
+  - And for our customers in the UK, USA and the EU we have negotiated fantastic 18650 battery discount vouchers with Fogstar, BatteryJunction and NKON (subject to availability) - simply order your Red Reactor now!
 
 ## Find out more!
 

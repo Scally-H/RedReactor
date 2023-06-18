@@ -160,6 +160,4 @@ If the SHUTDOWN state is triggered, the application will send a final email and 
 If you have any problems installing this application please send us a message on support@theredreactor.com and we'll be sure to help!
 
 <H2>Where can I get a Red Reactor?</H2>
-We are now live on Kickstarter!
-So please visit us at https://www.kickstarter.com/projects/pascal-h/the-red-reactor-when-power-really-matters for some great options!
- 
+You can order your Red Reactor from our website at https://www.theredreactor.com/pre-order/ - simply fill in the form and we'll email you an invoice. Pay by Paypal and we'll ship straight away!
