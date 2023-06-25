@@ -81,7 +81,7 @@ sudo systemctl status RR_WebMonitor.service
 ```
 This will start the service immediately, but also automatically again when booting. The status command will show it running.
 
-The RR_WebMonitor.service file defines that if the service terminates with an error it will be restarted again after <b>RestartSec</b> 5 seconds.  You can change this file by editing <b>StartLimitBurst</b> which sets the number of restarts allowed within <b>StartLimitIntervalSec</b> seconds. If you decide to change these values after installing the service, do remember to copy the service file to /lib/.. again! (use 'restart' with the systemctl command)
+You may need to edit the RR_WebMonitor.service file depending on your setup (e.g. if you are not logged in as user 'pi'). It defines that if the service terminates with an error it will be restarted again after <b>RestartSec</b> 5 seconds.  You can change the thresholds by editing <b>StartLimitBurst</b> which sets the number of restarts allowed within <b>StartLimitIntervalSec</b> seconds. If you decide to change these values after installing the service, do remember to copy the service file to /lib/.. again! (use 'restart' with the systemctl command)
 
 Note that the log file only contains the data sent to an active browser session.
 
