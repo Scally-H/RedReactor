@@ -71,7 +71,7 @@ def rr_plots(y1: list, y2: list, temperature: list):
     ax1.set_ylim([2.4, 4.3])
     # For current, set y2-axis max scale according to simple usage models
     if min(y2data) < 0:
-        y_min = -1500
+        y_min = min(y2data)//500*500
     else:
         y_min = 0
     if max(y2data) < 500:

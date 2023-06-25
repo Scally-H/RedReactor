@@ -50,8 +50,8 @@ try:
     check_attached = INA219(SHUNT_OHMS, MAX_EXPECTED_AMPS, busnum=1)
     check_attached.configure(check_attached.RANGE_16V)
 except OSError:
-    print("RED REACTOR IS NOT Attached, exiting")
-    exit(1)
+    print("Unable to access RED REACTOR, exiting")
+    raise RuntimeError("Unable to access RED REACTOR")
 else:
     print("RED REACTOR : Attached")
 
@@ -90,7 +90,7 @@ class RRWebBat:
         self.get_battery()
 
         # Shutdown immediately if below VMIN without charger attached
-        if self.voltage < BATTERY_VMIN and battery.battery_status != "CHARGING":
+        if self.voltage < BATTERY_VMIN and self.battery_status != "CHARGING":
             self.shutdown = True
 
     def get_battery(self):
@@ -110,16 +110,17 @@ class RRWebBat:
             if self.current < 0:
                 self.battery_status = "CHARGING"
             elif self.current < 10:
-                self.battery_status = "FULL"
+                # Check if there is a battery fault
+                # Adjusted for production Battery Management IC, detect error if voltage changes > 0.01 when FULL
+                if self.voltage > BATTERY_OVER or \
+                        self.battery_status in ["FULL", "FAULT"] and abs(self.voltage - self.history[-1]) > 0.01:
+                    print("RED REACTOR : BATTERY ERROR")
+                    self.battery_status = "FAULT"
+                    self.battery_charge = 100
+                else:
+                    self.battery_status = "FULL"
             else:
                 self.battery_status = "DISCHARGING"
-
-            # Check if there is a battery fault
-            # Voltage will fluctuate so check fault is cleared properly
-            if self.voltage > BATTERY_OVER or max(self.history) > BATTERY_OVER:
-                print("RED REACTOR : BATTERY ERROR")
-                self.battery_status = "FAULT"
-                self.battery_charge = 100
 
         except DeviceRangeError as e:
             # Current out of device range with specified shunt resistor

@@ -2,7 +2,9 @@
 
 The Red Reactor now provides a remote monitoring feature that enables you to see the status information at a glance from your web-browser.
 
-- <b>New Feature: Added CPU/GPU Throttling status incl. handy tooltip on returned value</b>
+- <b>New Feature: I2C error handling for systemd service use</b>
+- <b>Improved battery fault detection</b>
+- <b>Includes: CPU/GPU Throttling status incl. handy tooltip on returned value</b>
 
 **Installation**
 
@@ -65,6 +67,23 @@ This should show you a page like this:
 <img src="RR_WebMon - screenshot.JPG" width="90%"  alt="The Red Reactor Remote Monitor WebApp">
 
 Simply edit the configuration parameters on the webpage and hit 'Submit' to update the server. The battery is checked every 5 seconds (used for averaged reading values) and the server will be forced to shutdown safely when the battery reaches BATTERY_VMIN (in RR_WebBat.py), set to 2.9v by default. The battery status colour changes for these battery %'s: 0-9, 10-19, 20-39, 40-59, 60-79, 80-99, FULL (charge complete)
+
+<H2>Configure to run at Boot time</h2>
+
+You can use systemd to automate running RR_WebMonitor as a service. RR_WebMonitor has been updated to still enable a remote reboot or shutdown in case of I2C access errors. In case of other system errors, systemd will attempt to restart the RR_WebMonitor service. 
+To install the service, please use the following commands:
+
+```
+sudo cp RR_WebMonitor.service /lib/systemd/system/RR_WebMonitor.service
+sudo systemctl enable RR_WebMonitor.service
+sudo systemctl start RR_WebMonitor.service
+sudo systemctl status RR_WebMonitor.service
+```
+This will start the service immediately, but also automatically again when booting. The status command will show it running.
+
+The RR_WebMonitor.service file defines that if the service terminates with an error it will be restarted again after <b>RestartSec</b> 5 seconds.  You can change this file by editing <b>StartLimitBurst</b> which sets the number of restarts allowed within <b>StartLimitIntervalSec</b> seconds. If you decide to change these values after installing the service, do remember to copy the service file to /lib/.. again! (use 'restart' with the systemctl command)
+
+Note that the log file only contains the data sent to an active browser session.
 
 <h2>Where can I get a Red Reactor?</h2>
 You can order your Red Reactor from our website at https://www.theredreactor.com/pre-order/ - simply fill in the form and we'll email you an invoice. Pay by Paypal and we'll ship straight away! 

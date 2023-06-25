@@ -21,7 +21,14 @@
 """
 
 # Import battery monitoring class to run as background thread
-import RR_WebBat
+# Added check that Red Reactor can be read from
+try:
+    import RR_WebBat
+    rr_status_ok = True
+except RuntimeError:
+    print("ERROR: Unable to access I2C, limiting functionality")
+    rr_status_ok = False
+
 import RR_Plotgraphs
 
 import time
@@ -125,8 +132,8 @@ class WebStats:
         self.stop = True
 
     def update_form_data(self):
-        # Gather data for web-form update
-        if self.readings >= self.history:
+        # Gather data for web-form update [keep up to 100 records, only show required history]
+        if self.readings >= 100:
             self.history_volts.pop(0)
             self.history_current.pop(0)
             self.history_temp.pop(0)
@@ -173,7 +180,7 @@ class WebStats:
                                 ", {:.2f}V, {:7.2f}mA, Ext Power: {}, Uptime: {}, Battery "
                                 "Time: {}, Temperature: {:.1f}, CPU: {}\n".format(self.battery.voltage,
                                                                                   self.battery.current,
-                                                                                  "Y" if self.ext_power else "N",
+                                                                                  self.ext_power,
                                                                                   self.up_time,
                                                                                   self.battery_time,
                                                                                   self.temperature,
@@ -204,6 +211,9 @@ def rr_status():
 @app.route('/RedReactor/', methods=['POST', 'GET'])
 def rr_web_monitor():
     print("Updating Status Page")
+    # If unable to read I2C, limit options to shutdown/reboot
+    if not rr_status_ok:
+        return render_template("RR_WebMonitor - SysError.html")
 
     if request.method == 'POST':
         try:
@@ -266,8 +276,9 @@ def rr_web_monitor():
 def rr_stop():
     print("STOP Request received!")
     if request.method == 'POST':
-        # Stops update_bat_status thread
-        web_info.finish()
+        # Stops update_bat_status thread if running
+        if rr_status_ok:
+            web_info.finish()
 
         if request.form['stop'] == "Restart":
             # Reboot in 5 seconds, gives time to tidy up
@@ -288,13 +299,14 @@ fault = '230, 230, 0'
 discharging = ('255,0,0', '255,153,0', '204,204,0', '153,204,0', '102,255,51', '51,204,51')
 charging = ('204,0,153', '255,0,255', '204,51,255', '153,102,255', '102,102,255', '0,153,153')
 
-# Invoke the WebStats class to manage webpage data
-web_info = WebStats()
+# Invoke the WebStats class to manage webpage data [not if Red Reactor failed to load]
+if rr_status_ok:
+    web_info = WebStats()
 
-# Run separate thread to update and monitor battery status for shutdown every 5s
-web_info_thread = threading.Thread(target=web_info.update_bat_status, name="RR_BatStatus")
-web_info_thread.start()
-time.sleep(0.5)
+    # Run separate thread to update and monitor battery status for shutdown every 5s
+    web_info_thread = threading.Thread(target=web_info.update_bat_status, name="RR_BatStatus")
+    web_info_thread.start()
+    time.sleep(0.5)
 
 # Start the server framework
 if __name__ == "__main__":
