@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+
+<!-- 
+*** (c) The Red Reactor
+*** Designed for use with the Red Reactor Battery Power Supply
+*** System Error Template for RR_WebMonitor.py
+*** Creator: Pascal Herczog
+*** Version: 1.0, June 2023
+***
+*** Code provided without warranty
+-->
+
+<head>
+	<title>The RedReactor WebMonitor</title>
+	
+	<link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+	
+	<script>
+    function Confirm()
+    {
+      return confirm("Are you sure?");
+    }
+	
+	</script>
+	<!-- Styles are embedded to support Flask substitution -->
+	<style>
+	.content {
+	  max-width: 960px;
+	  margin: auto;
+	}
+	/* buttons and battery entries */
+	.warning { font-weight: bold; }
+	.button {
+	  display: inline-block;
+	  padding: 2px 5px;
+	  font-size: 13px;
+	  cursor: pointer;
+	  text-align: center;
+	  text-decoration: none;
+	  outline: none;
+	  color: #fff;
+	  width: 100px;
+	  border: none;
+	  border-radius: 15px;
+	  box-shadow: 0 4px #999;
+	  transition-duration: 0.4s;
+	}
+	.button:hover {
+	  background-color: #555555; /* Black */
+	  color: white;
+	}
+	.button:active {
+	  background-color: #3e8e41;
+	  box-shadow: 0 2px #666;
+	  transform: translateY(4px);
+	}
+	.buttonForm {background-color: #4CAF50;} /* Green */
+	.buttonRestart {background-color: #008CBA;} /* Blue */
+	.buttonShutdown {background-color: #f44336;} /* Red */
+	
+	}
+	</style>
+</head>
+
+<body>
+<div class="content">
+
+<p><a href="https://www.theredreactor.com">
+<img width=800 height=250 id="HeaderPic" src="/static/RR_WebMonitor.jpg" alt="Red Reactor Header">
+</a></p>
+
+<table border = 1>
+ <tr>
+  <td align="center" colspan=2> <b>Red Reactor System Error: Unable to read I2C bus for battery status</b><br>
+Restart may resolve the issue, else please shut down.
+  </td>
+ </tr>
+ <tr height="40px">
+  <td align="center">
+  <form action="/stop/" method="POST">
+  <button class="button buttonRestart" Onclick="return Confirm();" type="submit" name="stop" value="Restart">
+  <!-- <img src="images/action_delete.png" alt="Restart"> -->
+  Restart</button></td>
+  <td align="center">
+  <button class="button buttonShutdown" Onclick="return Confirm();" type="submit" name="stop" value="Shutdown">
+  <!-- <img src="images/action_delete.png" alt="Restart"> -->
+  Shutdown</button></td>
+  </form>
+ </tr>
+</table>
+
+<p>© The RedReactor</p>
+
+</div>
+
+</body>
+
+</html>
