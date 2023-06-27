@@ -19,6 +19,10 @@
 from ina219 import INA219  # This controls the battery monitoring IC
 from ina219 import DeviceRangeError  # Handle reading errors
 import time  # Used to sleep between readings
+import threading
+
+# Use this if forcing shutdown
+# import subprocess
 
 # Constants
 # RED REACTOR I2C address
@@ -41,6 +45,8 @@ MAX_EXPECTED_AMPS = 5.5
 # Set the overcharge threshold at +1.5%
 # When triggered, the voltage read will fluctuate but battery GND is disconnected
 BATTERY_OVER = 4.2 * 1.015
+BATTERY_CHRG = 0.01
+BATTERY_DCHG = 0.05
 
 print("RED REACTOR - Example code")
 print("Battery Monitor: Shutdown at {:.2f}V".format(BATTERY_VMIN))
@@ -52,8 +58,8 @@ print("Battery Monitor: Shutdown at {:.2f}V".format(BATTERY_VMIN))
 try:
     check_attached = INA219(SHUNT_OHMS, MAX_EXPECTED_AMPS, busnum=1)
     check_attached.configure(check_attached.RANGE_16V)
-except OSError:
-    print("RED REACTOR IS NOT Attached, exiting")
+except OSError as e:
+    print("RED REACTOR IS NOT Attached, exiting:", e)
     exit(1)
 except RuntimeError as e:
     print("Failed to read from I2C bus: ", e)
@@ -79,56 +85,37 @@ class RedReactor:
         # Note readings will vary based on instantaneous load
         self.coefficients = (0.05, 0.15, 0.3, 0.5)
 
-        # During start-up, exit immediately if first reading below BATTERY_VMIN
         # During operation, exit if average readings below BATTERY_VMIN
         self.shutdown = False
 
         # May be asserted by __main__ to force exit
         self.stop_reader = False
 
+        # Initialise system
         # Set measurement config, ina class will optimise readings for resolution
         self.ina = INA219(SHUNT_OHMS, MAX_EXPECTED_AMPS, busnum=1)
         self.ina.configure(self.ina.RANGE_16V)
 
-        # Read battery voltage
-        # ina.voltage() - returns the bus voltage in V
+        # Initialise battery status and reading history [last element is most recent]
+        # Note that the bus voltage is that on the load side of the shunt resistor
+        self.voltage = self.ina.voltage()
+        self.history = [self.voltage, self.voltage, self.voltage, self.voltage]
 
-        # For the following, an exception is thrown when result is out of ADC range
+        self.current = 0
+        self.battery_charge = 100
+        # [FULL, CHARGING, DISCHARGING, FAULT]
+        self.battery_status = "FULL"
+
+        # For the following ina features, an exception is thrown when result is out of ADC range
         # ina.supply_voltage() - returns the sum of bus supply voltage and shunt voltage
         # ina.current() - returns bus current in mA
         # ina.power() - returns the bus power consumption in mW
         # ina.shunt_voltage() - return shunt voltage value in mV
 
-        # Note that the bus voltage is that on the load side of the shunt resistor
-        # Voltage on the supply side = the bus voltage + shunt voltage
-
-        # or use the supply_voltage() function.
-        self.voltage = self.ina.voltage()
-        # To know if charger is connected, measure current, check for out of range exception
-        try:
-            self.current = self.ina.current()
-            print("RED REACTOR: Current (mA):", self.current)
-            # Negative means charging, less than 10 means FULL but charger still connected
-            if self.current < 0:
-                self.is_charging = True
-            else:
-                self.is_charging = False
-            if 0 > self.current < 10 and self.voltage < BATTERY_OVER:
-                self.battery_full = True
-            else:
-                self.battery_full = False
-        except DeviceRangeError as e:
-            # Current out of device range with specified shunt resistor
-            print("RED REACTOR:: Current Load out of measurement range\nError:", e)
-
-        # Initialise history of 4 readings, last element is most recent
-        self.history = [self.voltage, self.voltage, self.voltage, self.voltage]
-
-        self.battery_charge = (self.voltage - BATTERY_VMIN) / (BATTERY_VMAX - BATTERY_VMIN)
-
-        # Shutdown immediately if below VMIN without charger attached
-        if self.voltage < BATTERY_VMIN and not self.is_charging:
-            self.shutdown = True
+        # Now run the battery reader in a separate thread for continuous monitoring
+        # Run battery monitoring in separate thread
+        self.battery_reader_thread = threading.Thread(target=self.battery_reader, name="BatteryMonitor")
+        self.battery_reader_thread.start()
 
     def change_interval(self, interval):
         self.measure_interval = interval
@@ -152,28 +139,31 @@ class RedReactor:
                 # Value is positive for discharge, negative for charging, or <10 if FULL and charger connected
                 self.current = self.ina.current()
                 if self.current < 0:
-                    self.is_charging = True
+                    self.battery_status = "CHARGING"
+                elif self.current < 10:
+                    # Check if there is a battery fault
+                    # Adjusted for production Battery Management IC, detect error if voltage changes > 0.01 when FULL
+                    if self.voltage > BATTERY_OVER or \
+                            self.battery_status in ["FULL", "FAULT"] and abs(self.voltage - self.history[-1]) > 0.01:
+                        self.battery_status = "FAULT"
+                        self.battery_charge = 100
+                    else:
+                        self.battery_status = "FULL"
                 else:
-                    self.is_charging = False
-                # Include check for battery fault / overcharge condition
-                if 0 < self.current < 10 and self.voltage < BATTERY_OVER:
-                    self.battery_full = True
-                else:
-                    self.battery_full = False
+                    self.battery_status = "DISCHARGING"
 
                 # Returns the bus power consumption in milliwatts (mW)
                 self.power = self.ina.power()
                 # Returns the shunt voltage in millivolts (mV)
                 self.shuntv = self.ina.shunt_voltage()
-            except DeviceRangeError as e:
+            except DeviceRangeError as battery_error:
                 # Current out of device range with specified shunt resistor
-                print("RED REACTOR: Current Load out of measurement range\nError:", e)
+                print("RED REACTOR: Measurement Range Error:\n", battery_error)
                 # Max shunt voltage is 0.32v but at 0.05 Ohms this would be 6.4 Amps
                 self.current = 6400.0
                 self.power = self.voltage * abs(self.current)
                 self.shuntv = 0.32
-                # Given the exception, current is drawn from battery
-                self.is_charging = False
+                self.battery_status = "FAULT"
 
             # Update read history, maintains last 4 readings incl. this one
             self.history.pop(0)
@@ -186,10 +176,21 @@ class RedReactor:
                             + self.history[3] * self.coefficients[3])
             # Down to ~3v an 18650 discharge curve is more or less linear
             # If you choose to model this more accurately, account for current peaks
-            self.battery_charge = (average_volt - BATTERY_VMIN) / (BATTERY_VMAX - BATTERY_VMIN)
+            # Set Charge Level (except for FAULT)
+            if self.battery_status == "CHARGING":
+                # Adjust charge level w.r.t. charging state
+                self.battery_charge = \
+                    min(100, int(((average_volt - BATTERY_VMIN) / (BATTERY_VMAX + BATTERY_CHRG - BATTERY_VMIN)) * 100))
+            elif self.battery_status in ['DISCHARGING', 'FULL']:
+                # At end of charge cycle battery voltage will drop slightly as charger no longer driving
+                self.battery_charge = \
+                    min(100, int(((average_volt - BATTERY_VMIN) / (BATTERY_VMAX - BATTERY_DCHG - BATTERY_VMIN)) * 100))
+            # If system goes below VMIN, show 0%
+            if self.battery_charge < 0:
+                self.battery_charge = 0
 
-            # STOP If average readings below VMIN
-            if average_volt < BATTERY_VMIN:
+            # STOP If average readings below VMIN and still discharging
+            if average_volt < BATTERY_VMIN and self.battery_status == "DISCHARGING":
                 # Once set, it cannot be reset without a proper shutdown
                 self.shutdown = True
                 break
@@ -205,6 +206,8 @@ class RedReactor:
 
         if self.shutdown:
             print("Battery Monitor: Exiting on battery voltage warning")
+            # Enable to force a system shutdown from here
+            # subprocess.Popen(['sleep 5;sudo shutdown -r now'], shell=True)
         else:
             print("Battery Monitor: Exiting on user request")
 
@@ -218,7 +221,6 @@ if __name__ == "__main__":
     
     """
 
-    import threading
     import sys
 
     if len(sys.argv) != 2:
@@ -231,32 +233,21 @@ if __name__ == "__main__":
     # Initialise RedReactor and set measurement interval
     battery = RedReactor(report_interval)
 
-    # Run battery monitoring in separate thread
-    battery_reader_thread = threading.Thread(target=battery.battery_reader, name="BatteryMonitor")
-    battery_reader_thread.start()
+    # Your application can access the battery status at any time
+    print(" Vbat,   I(mA), Power(mW), Vshunt, CHARGE, STATUS ")
 
     try:
         while not battery.shutdown:
             time.sleep(report_interval)
-            # An overcharge condition disconnects the battery GND terminal from the circuit
-            # This is equivalent to no battery fitted, both give LED error indication
-            if battery.voltage > BATTERY_OVER:
-                print("Battery Error - No battery or overcharge detected. Reading {:.3f}v".format(battery.voltage))
-                continue
 
-            if battery.battery_full:
-                print("Current Battery Status:"
-                      " FULL, external power, Voltage {:.3f}v, Current {:.3f}mA".format(battery.voltage,
-                                                                                        battery.current))
-            else:
-                print("Current Battery Status:"
-                      " {}% - {}, "
-                      "Voltage {:.3f}v, Current {:.3f}mA".format(min(int(battery.battery_charge * 100), 100),
-                                                                 "Charging" if battery.is_charging else "No Mains",
-                                                                 battery.voltage, battery.current))
-
-            if battery.battery_charge < 0.1 and not battery.is_charging:
-                print("UI: Battery Low Warning!")
+            log_msg = "{:.3f}, {:7.2f}, {:7.2f},  {:7.3f},  {:4}%, {}".format(battery.voltage,
+                                                                              battery.current,
+                                                                              battery.power,
+                                                                              battery.shuntv,
+                                                                              battery.battery_charge,
+                                                                              battery.battery_status
+                                                                              )
+            print(log_msg)
 
         print("UI: Battery shutdown request detected")
     except KeyboardInterrupt:
