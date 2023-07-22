@@ -54,6 +54,7 @@ If not already installed previously, please also install:
 This application also needs the python MQTT library, so please install:
 ```
   pip3 install paho-mqtt
+  pip3 install pyyaml
 ```
 
 
