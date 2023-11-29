@@ -3,7 +3,7 @@
   
   Welcome to the sample code and documentation for the Red Reactor, the ultimate battery power supply for all your Raspberry Pi projects.</b>
   
-** Our Kickstarter campaign has now finished, <b>and we have completed shipping nearly a thousand units to all our backers!</b> We are live with a pre-order form in case you missed our campaign or would like to order more units, please check our website at https://www.theredreactor.com/ - and <b>check out our reviews page at</b> https://www.theredreactor.com/reviews/ **
+** Our Kickstarter campaign has now finished, <b>and we have completed shipping nearly a thousand units to all our backers!</b> We are live with an order form in case you missed our campaign or would like to order more units, please check our website at https://www.theredreactor.com/ - and <b>check out our reviews page at</b> https://www.theredreactor.com/reviews/ **
 
 But you can still see the story of our campaign journey on our <a href="https://www.kickstarter.com/projects/pascal-h/the-red-reactor-when-power-really-matters">Kickstarter page</a>, which also shows customer comments and our technology updates.
 
@@ -24,7 +24,8 @@ sudo pip3 install pi-ina219
 ```
 Please remember to enable the I2C bus under the Advanced Options of raspi-config or via the GUI, as documented in the Red Reactor instruction manual (you will need to reboot the Pi for this to take effect).
 
-(You can find more information about this library for your own code at https://github.com/chrisb2/pi_ina219 )
+(You can find more information about this library for your own code at https://github.com/chrisb2/pi_ina219 ) <br>
+<b> Please note that for Pi Bookworm OS you'll need a few extra steps to install INA219, please see https://www.theredreactor.com/2023/11/05/pi-bookworm/ </b>
 
 To run the RedReactor_Button.py file you will first need to install the GPIO-Zero library (python3):
 
