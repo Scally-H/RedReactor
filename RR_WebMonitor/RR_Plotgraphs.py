@@ -15,12 +15,15 @@
 *** You may use/modify only for use with the RED REACTOR product
 *** Filename: RR_Plotgraphs.py
 *** PythonVn: 3.8, 32-bit
-*** Date: April 2022
+*** Date: Dec 2023
 """
 
 # Import Libraries
 import numpy as np
+# Use 'Agg' (non-gui) to remove thread warning
+import matplotlib
 import matplotlib.pyplot as plt
+matplotlib.use('Agg')
 
 # Only show plot if used stand-alone
 show_plot = False
