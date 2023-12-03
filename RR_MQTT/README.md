@@ -51,9 +51,10 @@ If not already installed previously, please also install:
   sudo pip3 install pi-ina219
 ```
 
-This application also needs the python MQTT library, so please install:
+This application also needs the python MQTT library and config file reader, so please install:
 ```
   pip3 install paho-mqtt
+  pip3 install pyyaml
 ```
 
 
