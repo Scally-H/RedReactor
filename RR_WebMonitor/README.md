@@ -91,7 +91,7 @@ You may need to edit the RR_WebMonitor.service file depending on your setup (e.g
 Note that the log file only contains the data sent to an active browser session.
 
 <h2>Where can I get a Red Reactor?</h2>
-You can order your Red Reactor from our website at https://www.theredreactor.com/pre-order/ - simply fill in the form and we'll email you an invoice. Pay by Paypal and we'll ship straight away! 
+You can order your Red Reactor from our website at https://www.theredreactor.com/order - simply fill in the form and we'll email you an invoice. Pay by Paypal and we'll ship straight away! 
 
 Further information can be found on our website, at https://www.theredreactor.com
   
