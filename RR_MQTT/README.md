@@ -177,4 +177,4 @@ turn off its voltage regulator.
 If you have any problems installing this application please send us a message on support@theredreactor.com and we'll be sure to help!
 
 <H2>Where can I get a Red Reactor?</H2>
-You can order your Red Reactor from our website at https://www.theredreactor.com/pre-order/ - simply fill in the form and we'll email you an invoice. Pay by Paypal and we'll ship straight away!
+You can order your Red Reactor from our website at https://www.theredreactor.com/order - simply fill in the form and we'll email you an invoice. Pay by Paypal and we'll ship straight away!
