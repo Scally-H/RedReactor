@@ -95,7 +95,7 @@ We have created a first version of the mechanical drawing and 3D model of the Re
 - As of March 31st, we had shipped over 700 units!
 - <b>Completed all Kickstarter shipments by May'23</b>
 - <b>Check out the great reviews at</b> https://www.theredreactor.com/reviews/
-- You can order <i>your Red Reactor and Pogo-pins</i> via our website at https://www.theredreactor.com/pre-order/
+- You can order <i>your Red Reactor and Pogo-pins</i> via our website at https://www.theredreactor.com/order/
   - And for our customers in the UK, USA and the EU we have negotiated fantastic 18650 battery discount vouchers with Fogstar, BatteryJunction and NKON (subject to availability) - simply order your Red Reactor now!
 
 ## Find out more!
