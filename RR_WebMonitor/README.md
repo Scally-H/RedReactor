@@ -45,8 +45,8 @@ Also, if you get the following error, ImportError: numpy.core.multiarray failed 
 ```
   pip3 install -U numpy
 ```
-NOTE: One customer reported the following numpy problem on 64-bit Bullseye 2023-05-03 Legacy image upon running the RR_WebMonitor.py code: ImportError: libopenblas.so.0: cannot open shared object file: No such file or directory<br>
-=> We could not reproduce the error but it can be fixed with:
+NOTE: One customer reported the following numpy problem on the Raspberry Pi OS (Legacy) 32-bit Bullseye 2023-05-03 image upon running the RR_WebMonitor.py code: ImportError: libopenblas.so.0: cannot open shared object file: No such file or directory<br>
+=> This can be fixed with:
 ```
   sudo apt-get install libopenblas-dev
 ```
