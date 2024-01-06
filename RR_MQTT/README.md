@@ -4,9 +4,9 @@ This Red Reactor MQTT Client is designed to run as a background application to
 monitor the battery status and publish its data to an MQTT Broker for 
 integration with Home Automation systems, such as HomeAssistant and OpenHAB.
 
-<b> This is a draft release of the RR_MQTT client, tested with the
-Mosquito MQTT Broker and OpenHAB, but requires further integration work on 
-the Home Automation server side</b>
+<b> This is a basic release of the RR_MQTT client, tested with the
+Mosquito MQTT Broker and OpenHAB. For additional integration with HomeAssistant there is an enhanced version, please follow the instructions provided in issue https://github.com/Scally-H/RedReactor/issues/10
+(see the closed issues list). </b>
 
 The RR_MQTT client functions include:
 
