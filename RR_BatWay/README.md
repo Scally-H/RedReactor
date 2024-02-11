@@ -8,7 +8,7 @@ via raspi-config).
 :heavy_check_mark:This Red Reactor Battery System Tray Application is an application specifically designed for
 the Raspberry Pi Wayland Window Manager in Pi Bookwork OS (but it will also run on X11, see below).
 
-![New RedReactor SystemTray widget for Bookworm Wayland](https://github.com/Scally-H/RedReactor/RR_BatWat/RR_BatWay_Pi_ Bookworm_Wayland.png "RedReactor on Raspbbery Pi Bookworm Wayland")
+![New RedReactor SystemTray widget for Bookworm Wayland](https://github.com/Scally-H/RedReactor/blob/main/RR_BatWay/RR_BatWay_Pi_%20Bookworm_Wayland.png "RedReactor on Raspbbery Pi Bookworm Wayland")
 
 <H2> Special Features</H2>
 
@@ -46,14 +46,9 @@ Once downloaded/updated, type:
   cd RR_BatWay
 ```
 
-If not already installed previously, then specifically for Raspberry Pi Bookworm 
-the required python INA219 library requires a temporary workaround.
-
-Please check your python version number to be 3.11.x
-```
-python3 --version
-```
-Then please use (or edit accordingly):
+If not already installed previously, **then specifically for Raspberry Pi Bookworm** 
+the required python INA219 library requires a temporary workaround. Then please use 
+(or edit python version accordingly):
 ```
   sudo mv /usr/lib/python3.11/EXTERNALLY-MANAGED /usr/lib/python3.11/EXTERNALLY-MANAGED.old
   sudo pip3 install pi-ina219
@@ -69,7 +64,7 @@ For this application you also need to install the PyQt5 python library, as follo
 
 <H2>Before you run the application </h2>
 
-You can set a number of application parameters by editing the RR_BatWay.ini file as follows (integers only):
+You can set a number of application parameters by editing the **RR_BatWay.ini** file as follows (integers only):
 
 | .ini entry | Range | Default | Purpose |
 | --- | --- | --- | --- |
@@ -131,19 +126,20 @@ the OS shutdown system command. On completion the Red Reactor will automatically
 voltage regulator and output power.
 
 <H2>Wayland Autostart</H2>
-:exclamation:Please note that as of 10 Feb 2024, with a fully updated Pi Bookworm OS and 
-PyQt5 version 5.15.9, **a bug in Wayland/PyQt5** means that although RR_BatWay.py auto-starts at boot, 
-**a start-up delay is required** to ensure that the Battery icon is shown in the System Tray.**</br>
-
-There is currently a 5-second delay work-around in **RR_BatWay.sh** to manage this, but if the 
+:exclamation: Please note that as of 10 Feb 2024, with a fully updated Pi Bookworm OS and 
+PyQt5 version 5.15.9, <b>a bug in Wayland/PyQt5</b> means that although RR_BatWay.py auto-starts at boot, 
+a start-up delay is required to ensure that the Battery icon is shown in the System Tray.<br>
+<br>
+There is currently a 5-second delay work-around in <b>RR_BatWay.sh</b> to manage this, but if the 
 Battery icon does not show due to other system tasks delaying the creation of the System Tray 
-you may need to increase this value. It seems the **QSystemTrayIcon.isSystemTrayAvailable()** 
+you may need to increase this value. It seems the <b>QSystemTrayIcon.isSystemTrayAvailable()</b> 
 never gets set if the application is run before the System Tray is actually available. 
-Grateful for any feedback you may have on this!
+<i>Grateful for any feedback you may have on this!</i>
 
 <H2>Installation for X11 Window Manager</H2>
 You might prefer our [pi-battery-widget](https://github.com/Scally-H/pi-battery-widget) if you're 
-only running the X11 Window Manager, **BUT RR_BatWay runs on X11 as well as Wayland!**
+only running the X11 Window Manager, <b>BUT RR_BatWay runs on X11 as well as Wayland!</b><br>
+<br>
 
 So, if you want an autostart for X11, simply run:
 ```
@@ -151,7 +147,7 @@ So, if you want an autostart for X11, simply run:
   chmod +x install_x11
   ./install_x11
 ``` 
-This will copy the system autostart file to your user account and add RR_BatWay. If you run both 
+This will copy the system's X11 autostart file to your user account and add RR_BatWay. If you run both 
 installers you can easily switch between X11 and Wayland too.
 
 <H2>HELP!</H2>
