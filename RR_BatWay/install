@@ -1,0 +1,52 @@
+#!/bin/bash
+# autostart RR_BatWay under Wayland on Pi Bookworm
+
+if [ `whoami` = root ]; then
+  echo "Please run as the user who has started the desktop, not as root"
+  exit 1
+fi
+
+AUTOSTART=~/.config/wayfire.ini
+REDREACTOR=~/RedReactor/RR_BatWay
+
+echo "***********************************************"
+echo "Please remember to check the RR_BatWay.ini file"
+echo "***********************************************"
+cat $REDREACTOR/RR_BatWay.ini
+echo "***********************************************"
+
+if [ ! -f $AUTOSTART ]; then
+	echo "** Wayland .ini file not found, are you running Wayland?"
+	echo "** Unable to append RR_BatWay autostart command"
+	exit 1
+fi
+
+if [ $XDG_SESSION_TYPE != wayland ]; then
+	echo "** Unable to install from remote terminal / not wayland. Found" $XDG_SESSION_TYPE
+	echo "** Unable to append RR_BatWay autostart command"
+	exit 1
+fi
+
+echo "Updating user's" $AUTOSTART "file"
+cp $AUTOSTART ${AUTOSTART%/*}/wayfire.ini.bck.$(date -d "today" +"%H%M%S")
+
+if ! grep -q "\[autostart\]" $AUTOSTART;
+then
+	echo "Creating [autostart] section"
+	echo $'\n[autostart]' >> $AUTOSTART
+fi
+
+if ! grep -q "RR_BatWay.sh" $AUTOSTART
+then
+	sed  "/\[autostart\]/a rr_batway=$REDREACTOR/RR_BatWay.sh &" $AUTOSTART -i
+	echo "Added rr_batway="$REDREACTOR"/RR_BatWay.sh &"
+	echo "The Red Reactor RR_BatWay Application will autostart at next boot"
+else
+	echo "Autostart for RR_BatWay already enabled"
+fi
+
+echo "Starting the Red Reactor RR_BatWay SystemTray Application now"
+echo "In case of issues please check the log file or run interactively with"
+echo "python3 RR_BatWay.py"
+
+nohup python3 RR_BatWay.py >& /dev/null &

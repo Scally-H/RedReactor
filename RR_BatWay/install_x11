@@ -1,0 +1,56 @@
+#!/bin/bash
+# autostart RR_BatWay under x11 on Pi Bookworm
+
+if [ `whoami` = root ]; then
+  echo "Please run as the user who has started the desktop, not as root"
+  exit 1
+fi
+
+AUTOSTART=~/.config/lxsession/LXDE-pi/autostart
+SYSTEMSTART=/etc/xdg/lxsession/LXDE-pi/autostart
+REDREACTOR=~/RedReactor/RR_BatWay
+
+echo "***********************************************"
+echo "Please remember to check the RR_BatWay.ini file"
+echo "***********************************************"
+cat $REDREACTOR/RR_BatWay.ini
+echo "***********************************************"
+
+if [ $XDG_SESSION_TYPE != x11 ]; then
+	echo "** Unable to install from remote terminal / not x11. Found" $XDG_SESSION_TYPE
+	echo "** Unable to create RR_BatWay autostart command"
+	exit 1
+fi
+
+# check if user has own autostart file
+if [ ! -f $AUTOSTART ]; then
+	echo "Copying system autostart into user account"
+	# check if target folder exists
+	if [ ! -d ~/.config/lxsession ]; then
+		mkdir ~/.config/lxsession
+	fi
+	if [ ! -d ~/.config/lxsession/LXDE-pi ]; then
+		mkdir ~/.config/lxsession/LXDE-pi
+	fi
+	cp $SYSTEMSTART $AUTOSTART
+fi
+if [ -f $AUTOSTART ]; then
+	echo "Updating user's" $AUTOSTART "file"
+	# add line to lxsession autostart, if it does not already exist
+	if ! grep -q "RR_BatWay.sh" $AUTOSTART
+	then
+		cp $AUTOSTART ./autostart.bck
+		echo "@$REDREACTOR/RR_BatWay.sh > /dev/null &" >> $AUTOSTART
+	else
+		echo "Autostart for RR_BatWay already enabled"
+	fi
+else
+	echo "Failed to create/update user's autostart file in" $AUTOSTART
+fi
+
+
+echo "Starting the Red Reactor RR_BatWay SystemTray Application now"
+echo "In case of issues please check the log file or run interactively with"
+echo "python3 RR_BatWay.py"
+
+nohup python3 RR_BatWay.py >& /dev/null &
