@@ -137,7 +137,7 @@ never gets set if the application is run before the System Tray is actually avai
 <i>Grateful for any feedback you may have on this!</i>
 
 <H2>Installation for X11 Window Manager</H2>
-You might prefer our [pi-battery-widget](https://github.com/Scally-H/pi-battery-widget) if you're 
+You might prefer our pi-battery-widget at https://github.com/Scally-H/pi-battery-widget if you're 
 only running the X11 Window Manager, <b>BUT RR_BatWay runs on X11 as well as Wayland!</b><br>
 <br>
 
