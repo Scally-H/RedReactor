@@ -64,26 +64,31 @@ To see the battery voltage and current consumption, type:
 
 Full documentation is provided by the Red Reactor Manual.pdf, which includes Raspberry Pi configuration instructions.
 
-## We're pleased to announce the first release of our LXDE GUI battery widget!
+## Our LXDE GUI battery widget
 It is available from https://github.com/Scally-H/pi-battery-widget and autostarts itself perfectly into your widget taskbar, showing you charge level, battery status and carefully modelled remaining charge and discharge times!
 
-## New Remote Monitoring using your Web Browser!
+## Running Wayland on Bookworm OS? ❗
+If you've switched to the Wayland windown manager on Bookworm OS then please try our **New** <a href="https://github.com/Scally-H/RedReactor/tree/main/RR_BatWay">RR_BatWay Wayland System Tray Icon application</a>, easily configured to autostart on your shiny new desktop. 😃
+
+## Remote Monitoring using your Web Browser
 Head over to the RR_WebMonitor folder (see file listing above) to use your browser to remotely access all the battery status information, and even request a shutdown or restart of your system. Please see further instructions in the RR_WebMonitor README file.
 
-## Check out our new Battery Monitor with email alerts!
+## Check out our Battery Monitor with email alerts!
 Head over to the RR_BatMonitor folder (see file listing above) for a background battery monitor application that can email you on any battery state changes and manage a safe shutdown - perfect for 'headless' (no GUI) or unattended systems!
 
 ## Home Automation with our Red Reactor MQTT Client!
 Head over to the RR_MQTT folder (see file listing above) for our first release of our MQTT client to publish full battery status updates to your favourite MQTT Broker and Home Automation system, whilst monitoring the battery voltage to ensure a safe shutdown. Full details are in the readme file.
+
+❗ **NEW** if you want a fully integrated HomeAssistant RedReactor MQTT client head over to <a href="https://github.com/Scally-H/RedReactor/issues/10">mqtt -->> homeassistant Closed Issue #10</a> for more information!
 
 ## Install for Ubuntu 22.04 LTS
 We have now tested the configuration and setup requirements for <b>Ubuntu 22.04 LTS</b> (tested on the 64-bit Desktop edition) and documented the changes you need to apply on our website at https://www.theredreactor.com/2022/10/14/ubuntu/ - please follow these instructions first before adding and using these libraries/applications. Do let us know if your setup is behaving differently!
 
 ## Red Reactor Node-RED Dashboard
 
-Check out our new release of our Red Reactor Node-RED Home Automation Dashboard, which connects to our RR_MQTT client and gives you full visibility and control of your Red Reactor enabled Pi system! Easy to extend to fully automate your own control functions (e.g. alter the battery warning level under high load and temperature), or deploy for multiple devices, you can find out more about the setup on our website at https://www.theredreactor.com/2022/10/25/node-red/ with installation details in our RR_NodeRED folder above (https://github.com/Scally-H/RedReactor/tree/main/RR_NodeRED). We're looking forward to your suggestions for additional features!
+Check out the release of our Red Reactor Node-RED Home Automation Dashboard, which connects to our RR_MQTT client and gives you full visibility and control of your Red Reactor enabled Pi system! Easy to extend to fully automate your own control functions (e.g. alter the battery warning level under high load and temperature), or deploy for multiple devices, you can find out more about the setup on our website at https://www.theredreactor.com/2022/10/25/node-red/ with installation details in our RR_NodeRED folder above (https://github.com/Scally-H/RedReactor/tree/main/RR_NodeRED). We're looking forward to your suggestions for additional features!
 
-## NEW: Mechanical drawing and 3D Models for your custom case designs
+## Mechanical drawing and 3D Models for your custom case designs
 
 We have created a first version of the mechanical drawing and 3D model of the Red Reactor to support you in creating your custom case desigs. We will release these files through this GitHub repository after formal review, until then you can view them on our <a href="https://www.theredreactor.com/news/">news site</a>.
 
@@ -92,8 +97,9 @@ We have created a first version of the mechanical drawing and 3D model of the Re
 - PCB Manufacturing started mid-November with <a href="https://www.pcbway.com/">PCBWAY</a>, where we are part of their <a href="https://www.theredreactor.com/2022/07/06/targetlaunchdate/">Crowdfunding Sponsorship Program</a>
 - PCB's received mid-January, running every board through our test program
 - Shipping started mid-February
-- As of March 31st, we had shipped over 700 units!
+- As of March 31st 2023, we had shipped over 700 units!
 - <b>Completed all Kickstarter shipments by May'23</b>
+- Now shipped close to 1000 units!
 - <b>Check out the great reviews at</b> https://www.theredreactor.com/reviews/
 - You can order <i>your Red Reactor and Pogo-pins</i> via our website at https://www.theredreactor.com/order/
   - And for our customers in the UK, USA and the EU we have negotiated fantastic 18650 battery discount vouchers with Fogstar, BatteryJunction and NKON (subject to availability) - simply order your Red Reactor now!
