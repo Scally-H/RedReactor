@@ -8,6 +8,8 @@ via raspi-config).
 :heavy_check_mark:This Red Reactor Battery System Tray Application is an application specifically designed for
 the Raspberry Pi Wayland Window Manager in Pi Bookwork OS (but it will also run on X11, see below).
 
+:memo:Please see below for a version that works with Ubuntu 22.04 Desktop GUI!
+
 ![New RedReactor SystemTray widget for Bookworm Wayland](https://github.com/Scally-H/RedReactor/blob/main/RR_BatWay/RR_BatWay_Pi_%20Bookworm_Wayland.png "RedReactor on Raspbbery Pi Bookworm Wayland")
 
 <H2> Special Features</H2>
@@ -57,10 +59,25 @@ the required python INA219 library requires a temporary workaround. Then please 
 (Please remember to enable the I2C bus under the Advanced Options of raspi-config or via the GUI, 
 as documented in the Red Reactor instruction manual - you will need to reboot the Pi for this to take effect.)
 
-For this application you also need to install the PyQt5 python library, as follows:
+:memo: For Raspberry Pi Bookworm OS you also need to install the PyQt5 python library, as follows:
 ```
   sudo apt-get install python3-pyqt5
 ```
+
+:memo: _Ubuntu 22.04 OS with Wayland has changed its approach to system tray icons which means that with PyQt5,
+RR_BatWay.py runs but is unable to display the system tray icon. It works if run as root but
+this is not ideal for automatic startup within a user's desktop environment. However, the PySide6
+library does work correctly hence you should install the PySide6 library as follows:_
+```
+  pip3 install PySide6
+```
+:exclamation:_if the pip3 process is killed due to running out of memory then please use this instead:_
+```
+  pip3 install PySide6 --no-cache-dir
+```
+_The RR_BatUbu.py is a modified application that imports from PySide6, the rest is identical. Please note
+that the Ubuntu system tray prevents it showing the tooltip, but you can still see all the icon states 
+and the detailed status menu._ 
 
 <H2>Before you run the application </h2>
 
@@ -79,6 +96,8 @@ You can test the application by running it interactively from a terminal window:
 
 ```
   python3 RR_BatWay.py
+  
+  (or python3 RR_BatUbu.py if on Ubuntu)
 ```
 and you will see the icon appear in the System Tray of the status bar.
 
@@ -101,15 +120,23 @@ The CPU status is derived from the vcgencmd with its output translated as:
 
 <H2>Configure to launch with Desktop</h2>
 
-Simply enable the script for execution and run the installer (updates wayfire.ini):
+:memo: For Raspberry Pi Bookworm OS, simply enable the script for execution and run the installer (updates wayfire.ini):
 ```
   chmod +x RR_BatWay.sh
   chmod +x install
   ./install
 ```
-
 This will simply add a line to the Wayland.ini file to run RR_BatWay.py at Desktop launch.
 *** **Note that this is only added for the current user** ***
+
+:memo: _For Ubuntu OS, use the following to automatically run the application when the GUI starts:_
+```
+  chmod +x RR_BatUbu.sh
+  chmod +x install_ubuntu
+  ./install_ubuntu
+```
+_This script creates a redreactor.desktop file based on the default RedReactor folder paths. Please
+note that it still uses RR_BatWay.log and RR_BatWay.ini files._
 
 <H2>Additional Application Features</H2>
 

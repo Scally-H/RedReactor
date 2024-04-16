@@ -1,0 +1,41 @@
+#!/bin/bash
+# autostart RR_BatUbu under Wayland in Ubuntu
+
+if [ `whoami` = root ]; then
+  echo "Please run as the user who has started the desktop, not as root"
+  exit 1
+fi
+
+AUTOSTART=~/.config/autostart/
+DESKTOP=redreactor.desktop
+REDREACTOR=~/RedReactor/RR_BatWay
+
+if [ $XDG_SESSION_TYPE != wayland ]; then
+	echo "** Expected to find wayland on Ubuntu, but found" $XDG_SESSION_TYPE
+	echo "** Continuing anyway but check install was successful"
+fi
+
+echo "***********************************************"
+echo "Please remember to check the RR_BatWay.ini file"
+echo "***********************************************"
+cat $REDREACTOR/RR_BatWay.ini
+echo "***********************************************"
+
+if [ ! -d $AUTOSTART ]; then
+	echo "** ~/.config/autostart folder not found, creating one for you"
+	mkdir $AUTOSTART
+fi
+
+echo "Copying redreactor.desktop to autostart folder"
+# Replace ~ with user's home directory path when copying to autostart
+sed "s|~|"$HOME"|g" $DESKTOP > $AUTOSTART$DESKTOP
+# cp $DESKTOP $AUTOSTART
+
+echo "Autostart for RR_BatUbu installed"
+
+
+echo "Starting the Red Reactor RR_BatUbu SystemTray Application now"
+echo "In case of issues please check the log file or run interactively with"
+echo "python3 RR_BatUbu.py"
+
+nohup python3 RR_BatUbu.py >& /dev/null &

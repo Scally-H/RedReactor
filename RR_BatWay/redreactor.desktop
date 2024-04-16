@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=~/RedReactor/RR_BatWay/RR_BatUbu.sh
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_GB]=RR_BatUbu
+Name=RR_BatUbu
+Comment[en_GB]=RR_BatUbu Autostart
+Comment=RR_BatUbu Autostart
