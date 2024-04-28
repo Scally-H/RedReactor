@@ -84,6 +84,11 @@ Head over to the RR_MQTT folder (see file listing above) for our first release o
 ## Install for Ubuntu 22.04 LTS
 We have now tested the configuration and setup requirements for <b>Ubuntu 22.04 LTS</b> (tested on the 64-bit Desktop edition) and documented the changes you need to apply on our website at https://www.theredreactor.com/2022/10/14/ubuntu/ - please follow these instructions first before adding and using these libraries/applications. Do let us know if your setup is behaving differently!
 
+### Installing the Ubuntu Red Reactor Kernel Module
+❗ **NEW** If you want to make use of the Ubuntu OS battery monitoring applications and system tray icon you can now 
+install our brand new redreactor kernel module and driver in the RR_Ubuntu folder! Or use the RR_BatUbu system tray widget 
+in the RR_BatWay folder.
+
 ## Red Reactor Node-RED Dashboard
 
 Check out the release of our Red Reactor Node-RED Home Automation Dashboard, which connects to our RR_MQTT client and gives you full visibility and control of your Red Reactor enabled Pi system! Easy to extend to fully automate your own control functions (e.g. alter the battery warning level under high load and temperature), or deploy for multiple devices, you can find out more about the setup on our website at https://www.theredreactor.com/2022/10/25/node-red/ with installation details in our RR_NodeRED folder above (https://github.com/Scally-H/RedReactor/tree/main/RR_NodeRED). We're looking forward to your suggestions for additional features!
