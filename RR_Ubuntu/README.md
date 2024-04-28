@@ -1,6 +1,6 @@
 <H1>Red Reactor Linux Kernel Module and Driver</H1>
 
-![RedReactor Linux Kernel Battery mManager](Ubuntu Battery Manager.png)
+<img src="Ubuntu Battery Manager.png" width="100%"  alt="RedReactor Linux Kernel Battery mManager">
 
 <H2>Intro</H2>
 Whilst the RR_BatWay application made it possible run the Red Reactor system tray icon on Wayland, Ubuntu's goal of 
@@ -17,7 +17,7 @@ battery properties queried by the OS. The Kernel module defines which properties
 can be accessed by user applications via the virtual system files at /sys/class/power_supply/BAT0 and 
 /sys/class/power_supply/AC0.
 
-![RedReactor OS Kernel ACPI file system](Ubuntu SysClassPowerSupply.png)
+<img src="Ubuntu SysClassPowerSupply.png" width="100%"  alt="RedReactor OS Kernel ACPI file system">
 
 <H2>Installation</H2>
 To update a previously downloaded RedReactor:
@@ -115,7 +115,7 @@ source code has been tweaked to remove the errors it was generating). This creat
 which is used by the RR_Driver.service file. The systemctl start command will run the service immediately. You can 
 see the driver information from the status command. This will now restart each time the system is booted up.
 
-![RR_Driver SystemCtl Status](Ubuntu RR_Driver SystemCtl.png)
+<img src="Ubuntu RR_Driver SystemCtl.png" width="100%"  alt="RR_Driver SystemCtl Status">
 
 Note that without the redreactor kernel module loaded the RR_Driver cannot write to the /dev/redreactor file, which is
 reported to the OS system log and systemctl status.
@@ -151,7 +151,7 @@ application.
 
 When the battery is discharging and reaches 10% charge level the OS will generate a pop-up warning.
 
-![Battery System Tray Icon and OS Battery Low Warning](Ubuntu Battery Views.png)
+<img src="Ubuntu Battery Views.png" width="100%"  alt="Battery System Tray Icon and OS Battery Low Warning">
 
 When the RR_Driver detects battery voltage has reached VMIN, it will trigger a safe shutdown.
 
@@ -182,11 +182,14 @@ rate when RATE should be, as indicated on the status display, in uW. Hence, the 
 <H4>References</H4>
 - A great source of inspiration came from https://github.com/hoelzro/linux-fake-battery-module . No comments in the 
 code but it was definitely a great help for the redreactor kernel code.
+
 - There are some other excellent intros to writing kernel modules, not least this one 
 https://embetronicx.com/tutorials/linux/device-drivers/cdev-structure-and-file-operations-of-character-drivers/ 
 which is a great guide to the character driver structure reading from /dev/redreactor
+
 - The Linux source code at https://github.com/torvalds/linux/blob/master/drivers/power/supply/power_supply_core.c is 
 very useful in understanding how the redreactor kernel is called, along with the power_supply.h header file.
+
 - The build uses a copy of the INA219 C-code driver from https://github.com/regisin/ina219 . This is unmodified except 
-for minor fixes to remove compiler warnings from the sprintf statements and hence it does not get downloaded from the 
-  source so if this is updated we'll check it out.
+for minor fixes to remove compiler warnings from the sprintf statements and hence it does not get downloaded from the
+source so if this is updated we'll check it out.
