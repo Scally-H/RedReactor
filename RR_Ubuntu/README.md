@@ -33,19 +33,20 @@ or to install from scratch, open a terminal and type:
 ```
   cd
   git clone https://github.com/Scally-H/RedReactor
-  cd RedReactor/RR_Ubuntu
+  cd RedReactor
 ```
 
 <H3>Installing the Red Reactor Kernel Module</H3>
 
 You must run the installer as root. You may find the headers are already installed on your system.
 ```
+  cd RR_Ubuntu
   sudo apt-get install linux-headers-$(uname -r)
   chmod +x ./intall.sh
   sudo ./install.sh
 ```
 The installation script will compile the redreactor.c file and copy the kernel module into your current Linux kernel
-power supply driver folder. **Note that this is specific to the current version of the kernel - if the kernel is 
+power supply driver folder. **Note that this is specific to the current version of the OS kernel - if the OS kernel is 
 updated you may need to re-run the installer to re-compile and copy the module to the new kernel version folder.**
 
 The installation script then updates /etc/modules file to enable the redreactor module to be loaded at boot time.
@@ -75,6 +76,9 @@ battery down (note charge is in uW, only use valid integers, and negative microa
   echo "chargefull = 21300000" | sudo tee /dev/redreactor
 ```
 
+Note that the red reactor kernel module expects a consistent relationship so without e.g., a microamps value the battery 
+state may not be correctly interpreted.
+
 <H3>Installing the RR_Driver</H3>
 The RR_Driver is a C++ code module that uses the IN219 library from https://github.com/regisin/ina219. It can be started as a systemd service at 
 boot time and configured using the following settings by editing the RR_Driver.cc file.
@@ -90,9 +94,9 @@ boot time and configured using the following settings by editing the RR_Driver.c
 
 The default values will average the last 10 samples taken over 10 seconds, and report the running average every 10 
 samples (in this case 10 seconds). If the battery state changes then it reports the update immediately, so it is not 
-necessary to report every sample.
+necessary to report every sample. The default should give a good averaging of power consumption.
 
-The RR_Driver reports the original battery capacity but adjusts the achieved capacity at the end of the first anf 
+The RR_Driver reports the original battery capacity but adjusts the achieved capacity at the end of the first and 
 subsequent charge cycles, as the final charge voltage will vary between boards and battery characteristics. Please 
 also note that charging only starts below the charging threshold voltage, which is less than the final charge 
 voltage and therefore the system may show the battery as FULL but with slightly less than 100% charge.
