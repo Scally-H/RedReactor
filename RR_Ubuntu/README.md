@@ -159,6 +159,12 @@ When the battery is discharging and reaches 10% charge level the OS will generat
 
 When the RR_Driver detects battery voltage has reached VMIN, it will trigger a safe shutdown.
 
+If you want the battery percentage to be displayed next to the battery icon, and you can't find an option for it in the
+Ubuntu Power Settings menu, just use this on the command line:
+```
+  gsettings set org.gnome.desktop.interface show-battery-percentage true
+```
+
 <H3>Open Issues</H3>
 Please note that this does not support all the features you might find in a laptop battery system, and therefore it 
 cannot monitor / show you certain types of battery data, or support advanced power management features.
